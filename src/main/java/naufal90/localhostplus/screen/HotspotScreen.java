@@ -1,33 +1,23 @@
 package naufal90.localhostplus.screen;
 
-import naufal90.localhostplus.config.ModConfig;
-import naufal90.localhostplus.network.HotspotServer;
-import net.minecraft.client.gui.screen.Screen;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
+import net.minecraft.client.MinecraftClient;
+import naufal90.localhostplus.network.HotspotServer;
 
-public class HotspotScreen extends Screen {
-    private final Screen parent;
-
-    public HotspotScreen(Screen parent) {
-        super(Text.literal("LocalHostPlus"));
-        this.parent = parent;
-    }
-
-    @Override
-    protected void init() {
-        addDrawableChild(ButtonWidget.builder(Text.literal("Start Hosting"), button -> {
-            HotspotServer.startBroadcast(ModConfig.serverMotd, ModConfig.serverPort);
-            client.setScreen(parent);
-        }).dimensions(this.width / 2 - 100, this.height / 2 - 24, 200, 20).build());
-
-        addDrawableChild(ButtonWidget.builder(Text.literal("Back"), button -> {
-            client.setScreen(parent);
-        }).dimensions(this.width / 2 - 100, this.height / 2 + 4, 200, 20).build());
-    }
-
-    @Override
-    public void close() {
-        client.setScreen(parent);
+public class HotspotScreen {
+    public static void register() {
+        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+            if (screen instanceof SelectWorldScreen selectWorldScreen) {
+                selectWorldScreen.addDrawableChild(
+                    ButtonWidget.builder(Text.of("Open to Hotspot LAN"), button -> {
+                        HotspotServer.openToLan();
+                    }).dimensions(10, 10, 150, 20).build()
+                );
+            }
+        });
     }
 }
