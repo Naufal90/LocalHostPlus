@@ -24,7 +24,7 @@ public class HotspotSettingsScreen extends Screen {
                 Text.literal("Start Open to Hotspot"),
                 button -> {
                     // Mulai Hotspot disini
-                    startHotspot();
+                    startHotspot()
                 }
             ).position(this.width / 2 - 75, this.height / 2 - 10)
             .size(150, 20).build()
@@ -43,15 +43,18 @@ public class HotspotSettingsScreen extends Screen {
     }
 
     private void startHotspot() {
+    if (this.client.getServer() instanceof IntegratedServer server) {
+        server.openToLan(null, false, 25565); // null = pakai gamemode yang lagi dipakai, false = offline mode
         if (this.client.player != null) {
             this.client.player.sendMessage(
                 Text.literal("[Hotspot] Server berhasil dimulai di jaringan lokal!"),
                 false
             );
         }
-        // Tutup screen kembali ke game
-        this.client.setScreen(null);
     }
+    // Tutup screen kembali ke game
+    this.client.setScreen(null);
+}
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
