@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.10'  // Gunakan versi terbaru fabric-loom
+    id 'fabric-loom' version '1.10-SNAPSHOT'  // Gunakan versi terbaru fabric-loom
     id 'maven-publish'
 }
 
