@@ -30,7 +30,7 @@ public class ClientDiscovery {
             try (DatagramSocket socket = new DatagramSocket(4445)) {
                 socket.setSoTimeout(0);
                 byte[] buf = new byte[256];
-                LocalHostPlusMod.LOGGER.info("[Discovery] Listening for LAN servers...");
+                LocalHostPlusClientMod.LOGGER.info("[Discovery] Listening for LAN servers...");
 
                 while (true) {
                     DatagramPacket packet = new DatagramPacket(buf, buf.length);
@@ -54,8 +54,8 @@ public class ClientDiscovery {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.currentScreen instanceof MultiplayerScreen screen) {
             ServerInfo info = new ServerInfo("Hotspot World", address + ":" + port, false);
-            screen.getServerList().add(info);
-            LocalHostPlusMod.LOGGER.info("[Discovery] Server found: " + address + ":" + port);
+            screen.getServerList().add(info,true);
+            LocalHostPlusClientMod.LOGGER.info("[Discovery] Server found: " + address + ":" + port);
         }
     }
 }
