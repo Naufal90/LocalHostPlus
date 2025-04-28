@@ -24,7 +24,7 @@ public class HotspotSettingsScreen extends Screen {
                 Text.literal("Start Open to Hotspot"),
                 button -> {
                     // Mulai Hotspot disini
-                    startHotspot()
+                    startHotspot();
                 }
             ).position(this.width / 2 - 75, this.height / 2 - 10)
             .size(150, 20).build()
