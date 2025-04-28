@@ -19,7 +19,7 @@ public class HotspotSettingsScreen extends Screen {
     @Override
     protected void init() {
         // Tombol Start Hotspot
-        startButton = this.addDrawable(
+        startButton = this.addDrawableChild(
             ButtonWidget.builder(
                 Text.literal("Start Open to Hotspot"),
                 button -> {
