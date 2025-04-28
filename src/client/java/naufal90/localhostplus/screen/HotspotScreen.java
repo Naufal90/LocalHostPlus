@@ -11,12 +11,12 @@ import naufal90.localhostplus.network.HotspotServer;
 public class HotspotScreen {
     public static void register() {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-    if (screen instanceof SelectWorldScreen selectWorldScreen) {
-        selectWorldScreen.addDrawableChild(
+    if (screen instanceof SelectWorldScreen) {
+        screen.addSelectableChild(
             ButtonWidget.builder(
                 Text.literal("Hotspot Local Server"),
                 button -> {
-                    client.setScreen(new TitleScreen()); // Ubah ke screen tujuan
+                    client.setScreen(new TitleScreen()); // Ganti ke screen custom kalau sudah ada
                 }
             ).position(10, 10).size(150, 20).build()
         );
