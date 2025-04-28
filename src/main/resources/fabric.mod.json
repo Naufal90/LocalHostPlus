@@ -1,1 +1,20 @@
 
+{
+  "schemaVersion": 1,
+  "id": "localhostplus",
+  "version": "1.0.0",
+  "name": "LocalHost+",
+  "description": "Host Minecraft worlds via hotspot with auto-discovery!",
+  "authors": ["Naufal90"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["naufal90.localhostplus.LocalHostPlusMod"],
+    "client": ["naufal90.localhostplus.client.LocalHostPlusClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.0",
+    "fabric-api": "*",
+    "minecraft": "1.20.x"
+  }
+}
