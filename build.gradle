@@ -20,6 +20,20 @@ dependencies {
 
 loom {
     splitEnvironmentSourceSets()
+
+    mods {
+        localhostplus {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+
+sourceSets {
+    client {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+    }
 }
 
 processResources {
