@@ -1,15 +1,18 @@
 {
   "schemaVersion": 1,
   "id": "localhostplus",
-  "version": "1.0.0",
+  "version": "1.0-beta",
   "name": "LocalHostPlus",
   "description": "Host Minecraft worlds via hotspot with auto-discovery!",
   "authors": ["Naufal90"],
   "license": "MIT",
   "environment": "*",
   "entrypoints": {
-    "client": [
+    "main": [
       "naufal90.localhostplus.LocalHostPlusMod"
+    ],
+    "client": [
+      "naufal90.localhostplus.LocalHostPlusClientMod"
     ]
   },
   "depends": {
