@@ -19,7 +19,23 @@ dependencies {
 }
 
 loom {
-    splitEnvironmentSourceSets()  // Konfigurasi yang benar untuk Fabric Loom
+	splitEnvironmentSourceSets()
+
+	mods {
+		"modid" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": inputs.properties.version
+	}
 }
 
 tasks.withType(JavaCompile).configureEach {
