@@ -55,7 +55,7 @@ public class ClientDiscovery {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.currentScreen instanceof MultiplayerScreen screen) {
             ServerInfo info = new ServerInfo("Hotspot World", address + ":" + port, false);
-            screen.getServerList().add(info,true);
+            screen.getServerList().add(info,false);
             LocalHostPlusClientMod.LOGGER.info("[Discovery] Server found: " + address + ":" + port);
         }
     }
