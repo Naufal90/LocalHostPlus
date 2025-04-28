@@ -1,11 +1,3 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        maven { url = 'https://maven.fabricmc.net/' }
-        mavenCentral()
-    }
-}
-
 plugins {
     id 'fabric-loom' version '1.10-SNAPSHOT'  // Gunakan versi terbaru fabric-loom
     id 'maven-publish'
