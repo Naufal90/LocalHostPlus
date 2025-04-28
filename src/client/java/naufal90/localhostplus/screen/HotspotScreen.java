@@ -12,12 +12,14 @@ public class HotspotScreen {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof GameMenuScreen gameMenuScreen) {
                 // Tambah tombol "Open to Hotspot" di pause menu
-                gameMenuScreen.addDrawableChild(
-                    ButtonWidget.builder(
-                        Text.literal("Open to Hotspot"),
-                        button -> client.setScreen(new HotspotSettingsScreen(screen))
-                    ).position(10, 10).size(150, 20).build()
-                );
+                screen.addDrawable(
+    ButtonWidget.builder(
+        Text.literal("Hotspot Local Server"),
+        button -> {
+            client.setScreen(new HotspotSettingsScreen(screen));
+        }
+    ).position(10, 10).size(150, 20).build()
+);
             }
         });
     }
