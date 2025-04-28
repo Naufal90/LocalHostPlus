@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ServerInfo;
+import naufal90.localhostplus.LocalHostPlusClientMod;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
