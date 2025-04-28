@@ -31,7 +31,7 @@ public class HotspotSettingsScreen extends Screen {
         );
 
         // Tombol Kembali
-        this.addDrawable(
+        this.addDrawableChild(
             ButtonWidget.builder(
                 Text.literal("Back"),
                 button -> {
