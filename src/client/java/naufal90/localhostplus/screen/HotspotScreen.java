@@ -11,13 +11,16 @@ import naufal90.localhostplus.network.HotspotServer;
 public class HotspotScreen {
     public static void register() {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            if (screen instanceof SelectWorldScreen selectWorldScreen) {
-                selectWorldScreen.addDrawableChild(
-                    ButtonWidget.builder(Text.of("Open to Hotspot LAN"), button -> {
-                        HotspotServer.openToLan();
-                    }).dimensions(10, 10, 150, 20).build()
-                );
-            }
-        });
+    if (screen instanceof SelectWorldScreen selectWorldScreen) {
+        selectWorldScreen.addDrawableChild(
+            ButtonWidget.builder(
+                Text.literal("Hotspot Local Server"),
+                button -> {
+                    client.setScreen(new TitleScreen()); // Ubah ke screen tujuan
+                }
+            ).position(10, 10).size(150, 20).build()
+        );
+    }
+});
     }
 }
