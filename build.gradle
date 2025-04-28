@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.3-SNAPSHOT'
+    id 'fabric-loom' version '1.5-SNAPSHOT'  // Gunakan versi terbaru fabric-loom
     id 'maven-publish'
 }
 
@@ -8,15 +8,20 @@ version = '1.0.0'
 
 repositories {
     mavenCentral()
+    maven { url 'https://maven.fabricmc.net/' }  // Repository Fabric
 }
 
 dependencies {
-    minecraft 'com.mojang:minecraft:1.20.1'
-    mappings 'net.fabricmc:yarn:1.20.1+build.10:v2'
-    modImplementation 'net.fabricmc:fabric-loader:0.14.21'
-    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.91.1+1.20.1'
+    minecraft 'com.mojang:minecraft:1.20.1'  // Versi Minecraft yang sesuai
+    mappings 'net.fabricmc:yarn:1.20.1+build.10:v2'  // Pastikan yarn mappings terbaru
+    modImplementation 'net.fabricmc:fabric-loader:0.14.22'  // Gunakan versi fabric-loader yang lebih baru
+    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.95.1+1.20.1'  // Gunakan versi Fabric API yang lebih baru
 }
 
 loom {
-    splitEnvironmentSourceSets()
+    splitEnvironmentSourceSets()  // Konfigurasi yang benar untuk Fabric Loom
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release.set(17)  // Pastikan set release 17 untuk Java 17
 }
