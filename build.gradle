@@ -12,32 +12,31 @@ repositories {
 }
 
 dependencies {
-    minecraft 'com.mojang:minecraft:1.20.1'  // Versi Minecraft yang sesuai
-    mappings 'net.fabricmc:yarn:1.20.1+build.10:v2'  // Pastikan yarn mappings terbaru
-    modImplementation 'net.fabricmc:fabric-loader:0.14.22'  // Gunakan versi fabric-loader yang lebih baru
-    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.95.1+1.20.1'  // Gunakan versi Fabric API yang lebih baru
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"  // Pakai variabel dari gradle.properties
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"  // Pakai variabel dari gradle.properties
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"  // Pakai variabel dari gradle.properties
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"  // Pakai variabel dari gradle.properties
 }
 
 loom {
-	splitEnvironmentSourceSets()
+    splitEnvironmentSourceSets()
 
-	mods {
-		"modid" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
-		}
-	}
-
+    mods {
+        "${project.archives_base_name}" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
 }
 
 processResources {
-	inputs.property "version", project.version
+    inputs.property "version", project.version
 
-	filesMatching("fabric.mod.json") {
-		expand "version": inputs.properties.version
-	}
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release.set(17)  // Pastikan set release 17 untuk Java 17
+    it.options.release.set(17)  // Pastikan pakai Java 17
 }
