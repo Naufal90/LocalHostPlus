@@ -8,7 +8,7 @@ version = project.mod_version
 
 repositories {
     mavenCentral()
-    maven { url 'https://maven.fabricmc.net/' }  // Repository Fabric
+    maven { url = 'https://maven.fabricmc.net/' }  // Repository Fabric
 }
 
 dependencies {
