@@ -45,7 +45,7 @@ public class ClientDiscovery {
                     }
                 }
             } catch (Exception e) {
-                LocalHostPlusMod.LOGGER.error("[Discovery] Listener stopped: ", e);
+                LocalHostPlusClientMod.LOGGER.error("[Discovery] Listener stopped: ", e);
             }
         });
     }
