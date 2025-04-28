@@ -10,7 +10,8 @@ public class HotspotServer {
 
     public static void openToLan() {
         MinecraftClient client = MinecraftClient.getInstance();
-        if (client.getServer() instanceof IntegratedServer server) {
+        if (client.getServer() instanceof IntegratedServer) {
+            IntegratedServer server = (IntegratedServer) client.getServer();
             try {
                 server.openToLan(server.getSaveProperties().getGameMode(), server.getSaveProperties().isHardcore(), 25565);
                 LocalHostPlusMod.LOGGER.info("[Hotspot] Server published on LAN!");
