@@ -5,7 +5,6 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.ButtonWidget.PressAction;
 import net.minecraft.text.Text;
-import net.minecraft.text.LiteralText;
 import net.minecraft.client.gui.DrawContext;
 
 public class HotspotSettingsScreen extends Screen {
