@@ -1,39 +1,24 @@
 package naufal90.localhostplus.network;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ServerInfo;
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import net.minecraft.server.integrated.IntegratedServer;
+import naufal90.localhostplus.LocalHostPlusMod;
 
 public class HotspotServer {
-    private static Thread broadcastThread;
-    private static boolean running = false;
 
-    public static void startBroadcast(String motd, int port) {
-        if (running) return;
-        running = true;
-        broadcastThread = new Thread(() -> {
+    public static void openToLan() {
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client.getServer() instanceof IntegratedServer server) {
             try {
-                DatagramSocket socket = new DatagramSocket();
-                socket.setBroadcast(true);
+                server.openToLan(server.getSaveProperties().getGameMode(), server.getSaveProperties().isHardcore(), 25565);
+                LocalHostPlusMod.LOGGER.info("[Hotspot] Server published on LAN!");
 
-                String message = "[MOTD]" + motd + "[/MOTD][AD]" + InetAddress.getLocalHost().getHostAddress() + ":" + port + "[/AD]";
-                byte[] data = message.getBytes();
-                DatagramPacket packet = new DatagramPacket(data, data.length, InetAddress.getByName("255.255.255.255"), 4445);
-
-                while (running) {
-                    socket.send(packet);
-                    Thread.sleep(1500);
-                }
-                socket.close();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
+                Broadcaster.startBroadcast(server.getServerPort());
+            } catch (Exception e) {
+                LocalHostPlusMod.LOGGER.error("[Hotspot] Failed to open LAN: ", e);
             }
-        }, "LocalHostPlus-Broadcast");
-        broadcastThread.start();
-    }
-
-    public static void stopBroadcast() {
-        running = false;
+        }
     }
 }
