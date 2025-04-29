@@ -1,12 +1,8 @@
-package naufal90.localhostplus.screen;
-
-import net.minecraft.client.gui.screen.GameMenuScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.text.Text;
 
 public class CustomGameMenuScreen extends GameMenuScreen {
-    public CustomGameMenuScreen(Screen parent) {
-        super(parent);
+    public CustomGameMenuScreen() {
+        super(Text.of("Custom Game Menu")); // Contoh jika membutuhkan Text
     }
 
     public ButtonWidget addCustomDrawableChild(ButtonWidget button) {
