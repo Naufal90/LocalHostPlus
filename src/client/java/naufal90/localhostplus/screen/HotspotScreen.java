@@ -19,7 +19,7 @@ public class HotspotScreen {
         .size(150, 20)
         .build();
 
-        screen.addDrawableChild(button);
+        ((Screen) screen).addSelectableChild(button);
     }
 });
     }
