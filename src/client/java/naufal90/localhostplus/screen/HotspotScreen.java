@@ -5,7 +5,7 @@ import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
-import naufal90.localhostplus.screen.HotspotSettingsScreen
+import naufal90.localhostplus.screen.HotspotSettingsScreen;
 
 public class HotspotScreen {
     public static void register() {
