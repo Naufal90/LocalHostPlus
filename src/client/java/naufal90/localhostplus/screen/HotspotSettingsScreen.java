@@ -1,5 +1,6 @@
 package naufal90.localhostplus.screen;
 
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
