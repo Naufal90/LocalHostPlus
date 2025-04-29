@@ -24,7 +24,7 @@ public class GameMenuScreenMixin {
                 button -> {
                     MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen(screen));
                 }
-            ).position(10, 10).size(150, 20).build()
+            ).position(10, 10).size(150, 20).build();
         );
     }
 }
