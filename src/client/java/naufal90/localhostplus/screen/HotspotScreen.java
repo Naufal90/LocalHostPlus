@@ -10,7 +10,7 @@ import naufal90.localhostplus.screen.HotspotSettingsScreen;
 public class HotspotScreen {
     public static void register() {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-    if (screen instanceof GameMenuScreen) {
+    if (screen instanceof GameMenuScreen gameMenuScreen) {
         ButtonWidget button = ButtonWidget.builder(
             Text.literal("Hotspot Local Server"),
             b -> client.setScreen(new HotspotSettingsScreen(screen))
@@ -19,7 +19,7 @@ public class HotspotScreen {
         .size(150, 20)
         .build();
 
-        ((Screen) screen).addSelectableChild(button);
+        gameMenuScreen.addDrawableChild(button);
     }
 });
     }
