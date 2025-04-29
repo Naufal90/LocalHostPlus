@@ -37,8 +37,10 @@ public class HotspotSettingsScreen extends Screen {
     }
 
     private void startHotspot() {
-        if (this.client.getServer() instanceof IntegratedServer server) {
-            server.openToLan(null, false, 25565);
+        if (this.client.getServer() instanceof IntegratedServer) {
+    IntegratedServer server = (IntegratedServer) this.client.getServer();
+    server.openToLan(null, false, 25565);
+        }
             if (this.client.player != null) {
                 this.client.player.sendMessage(
                     Text.literal("[Hotspot] Server berhasil dimulai di jaringan lokal!"),
@@ -52,7 +54,7 @@ public class HotspotSettingsScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.renderBackground(context);
-        context.drawCenteredTextWithShadow(context.getMatrices(), this.textRenderer, this.title, this.width / 2, 20, 0xFFFFFF);
+        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 20, 0xFFFFFF);
         super.render(context, mouseX, mouseY, delta);
     }
 }
