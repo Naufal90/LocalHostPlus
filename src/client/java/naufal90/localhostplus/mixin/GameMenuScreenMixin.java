@@ -16,9 +16,9 @@ public class GameMenuScreenMixin {
 
     @Inject(method = "init", at = @At("TAIL"))
     private void onInit(CallbackInfo info) {
-        GameMenuScreen screen = (GameMenuScreen) (Object) this;
+        Screen screen = (Screen) (Object) this;
 
-        screen.addDrawableChild(
+        ((Screen) screen).addDrawable(button);
             ButtonWidget.builder(
                 Text.literal("Open to Hotspot"),
                 button -> {
