@@ -9,7 +9,7 @@ import naufal90.localhostplus.screen.HotspotSettingsScreen;
 
 public class HotspotScreen {
     public static void register() {
-        ScreenEvents.afterInit(GameMenuScreen.class, (client, screen, scaledWidth, scaledHeight) -> {
+        ScreenEvents.AFTER_INIT.register(GameMenuScreen.class, (client, screen, scaledWidth, scaledHeight) -> {
             ButtonWidget button = ButtonWidget.builder(
                     Text.literal("Hotspot Local Server"),
                     b -> client.setScreen(new HotspotSettingsScreen(screen))
