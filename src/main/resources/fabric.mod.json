@@ -13,6 +13,9 @@
     ],
     "client": [
       "naufal90.localhostplus.LocalHostPlusClientMod"
+    ],
+    "mixins": [
+      "localhostplus.mixins.json"
     ]
   },
   "depends": {
