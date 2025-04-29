@@ -44,15 +44,19 @@ public class HotspotSettingsScreen extends Screen {
     }
 
     private void startHotspot() {
-    if (this.client.getServer() instanceof IntegratedServer server) {
-        server.openToLan(null, false, 25565); // null = pakai gamemode yang lagi dipakai, false = offline mode
-        if (this.client.player != null) {
-            this.client.player.sendMessage(
-                Text.literal("[Hotspot] Server berhasil dimulai di jaringan lokal!"),
-                false
-            );
-        }
+    if (this.client.getServer() instanceof IntegratedServer) {
+        IntegratedServer server = (IntegratedServer) this.client.getServer();
+        // null = pakai gamemode yang lagi dipakai, false = offline mode
+        server.openToLan(null, false, 25565);
     }
+
+    if (this.client.player != null) {
+        this.client.player.sendMessage(
+            Text.literal("[Hotspot] Server berhasil dimulai di jaringan lokal!"),
+            false
+        );
+    }
+}
     // Tutup screen kembali ke game
     this.client.setScreen(null);
 }
