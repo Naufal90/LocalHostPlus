@@ -12,7 +12,7 @@ public class HotspotScreen {
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof GameMenuScreen gameMenuScreen) {
                 // Tambah tombol "Open to Hotspot" di pause menu
-                screen.addDrawable(
+                screen.addDrawableChild(
     ButtonWidget.builder(
         Text.literal("Hotspot Local Server"),
         button -> {
