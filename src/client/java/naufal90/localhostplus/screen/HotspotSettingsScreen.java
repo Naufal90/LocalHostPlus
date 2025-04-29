@@ -56,7 +56,6 @@ public class HotspotSettingsScreen extends Screen {
             false
         );
     }
-}
     // Tutup screen kembali ke game
     this.client.setScreen(null);
 }
