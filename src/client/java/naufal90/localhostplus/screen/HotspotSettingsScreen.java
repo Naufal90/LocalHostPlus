@@ -40,7 +40,6 @@ public class HotspotSettingsScreen extends Screen {
         if (this.client.getServer() instanceof IntegratedServer) {
     IntegratedServer server = (IntegratedServer) this.client.getServer();
     server.openToLan(null, false, 25565);
-        }
             if (this.client.player != null) {
                 this.client.player.sendMessage(
                     Text.literal("[Hotspot] Server berhasil dimulai di jaringan lokal!"),
