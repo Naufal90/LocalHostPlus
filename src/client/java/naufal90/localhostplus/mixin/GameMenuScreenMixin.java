@@ -18,12 +18,11 @@ public class GameMenuScreenMixin {
     private void onInit(CallbackInfo info) {
         Screen screen = (Screen) (Object) this;
 
-        ((Screen) screen).addDrawable(button);
-            ButtonWidget.builder(
-                Text.literal("Open to Hotspot"),
-                button -> {
-                    MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen(screen));
-                }
-            ).position(10, 10).size(150, 20).build();
+        ButtonWidget button = ButtonWidget.builder(
+            Text.literal("Open to Hotspot"),
+            b -> MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen(screen))
+        ).position(10, 10).size(150, 20).build();
+
+        screen.addDrawable(button); // Setelah button dibuat
     }
 }
