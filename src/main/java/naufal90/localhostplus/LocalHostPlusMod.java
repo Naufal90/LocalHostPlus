@@ -13,6 +13,8 @@ public class LocalHostPlusMod implements ModInitializer {
         LOGGER.info("[LocalHostPlus] Mod Initialized!");
 
         Dummy.forceInit();
+        System.out.println(ModConfig.serverMotd);
+        Broadcaster.stopBroadcast(); // dummy call
         // Register your screen & networking
         //screen.HotspotScreen.register();
         //network.ClientDiscovery.init();
