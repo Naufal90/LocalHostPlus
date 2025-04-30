@@ -23,6 +23,6 @@ public class GameMenuScreenMixin {
             b -> MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen(screen))
         ).position(10, 10).size(150, 20).build();
 
-        screen.addDrawable(button); // Setelah button dibuat
+        screen.addDrawableChild(button); // Setelah button dibuat
     }
 }
