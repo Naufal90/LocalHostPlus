@@ -1,26 +1,20 @@
 {
   "schemaVersion": 1,
   "id": "localhostplus",
-  "version": "1.0-beta",
+  "version": "${version}",
   "name": "LocalHostPlus",
   "description": "Host Minecraft worlds via hotspot with auto-discovery!",
   "authors": ["Naufal90"],
   "license": "MIT",
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "naufal90.localhostplus.LocalHostPlusMod"
-    ],
-    "client": [
-      "naufal90.localhostplus.LocalHostPlusClientMod"
-    ],
-    "mixins": [
-      "localhostplus.mixins.json"
-    ]
+    "main": ["naufal90.localhostplus.LocalHostPlusMod"],
+    "client": ["naufal90.localhostplus.LocalHostPlusClientMod"]
   },
+  "mixins": ["localhostplus.mixins.json"],
   "depends": {
     "fabricloader": ">=0.14.0",
-    "fabric": "*",
-    "minecraft": "1.20.x"
+    "fabric-api": "*",
+    "minecraft": "1.20.1"
   }
 }
