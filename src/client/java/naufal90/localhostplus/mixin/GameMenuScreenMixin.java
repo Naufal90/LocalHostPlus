@@ -12,18 +12,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameMenuScreen.class)
-public class GameMenuScreenMixin {
+public abstract class GameMenuScreenMixin extends GameMenuScreenAccessor {
 
     @Inject(method = "init", at = @At("TAIL"))
     private void onInit(CallbackInfo info) {
-        GameMenuScreen self = (GameMenuScreen) (Object) this;
-
         ButtonWidget button = ButtonWidget.builder(
             Text.literal("Open to Hotspot"),
-            b -> MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen(self))
+            b -> MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen((GameMenuScreen)(Object)this))
         ).position(10, 10).size(150, 20).build();
 
-        // Panggil protected method dengan Invoker
-        ((GameMenuScreenAccessor) self).invokeAddDrawableChild(button);
+        // Gunakan shadowed method dari superclass
+        this.addDrawableChild(button);
     }
 }
