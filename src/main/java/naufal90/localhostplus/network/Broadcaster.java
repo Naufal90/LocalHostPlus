@@ -32,9 +32,10 @@ public class Broadcaster {
     }
 
     public static void stopBroadcast() {
-        running = false;
-        if (thread != null) {
-            thread.interrupt();
-        }
+    running = false;
+    if (thread != null && thread.isAlive()) {
+        try {
+            thread.join(500); // tunggu 0.5 detik
+        } catch (InterruptedException ignored) {}
     }
 }
