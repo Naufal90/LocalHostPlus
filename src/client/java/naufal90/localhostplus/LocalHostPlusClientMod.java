@@ -13,6 +13,8 @@ public class LocalHostPlusClientMod implements ClientModInitializer {
     
     @Override
     public void onInitializeClient() {
+        HotspotScreen.register();
         ClientDiscovery.init();
+        new HotspotSettingsScreen(null);
     }
 }
