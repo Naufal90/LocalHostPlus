@@ -6,10 +6,10 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Invoker;
+import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(GameMenuScreen.class)
-public interface GameMenuScreenAccessor {
-    @Invoker("addDrawableChild")
-    <T extends Element & Drawable & Selectable> T invokeAddDrawableChild(T element);
+public abstract class GameMenuScreenAccessor {
+    @Shadow
+    protected abstract <T extends Element & Drawable & Selectable> T addDrawableChild(T element);
 }
