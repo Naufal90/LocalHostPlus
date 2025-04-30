@@ -47,3 +47,8 @@ processResources {
 tasks.withType(JavaCompile).configureEach {
     it.options.release.set(17)  // Pastikan pakai Java 17
 }
+
+// Gabungkan sourceSet client ke jar
+tasks.named("jar") {
+    from(sourceSets.client.output)
+}
