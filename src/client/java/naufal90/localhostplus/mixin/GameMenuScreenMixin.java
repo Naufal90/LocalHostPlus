@@ -26,7 +26,7 @@ public abstract class GameMenuScreenMixin extends Screen {
         this.addDrawableChild(element);
     }
 
-    @Inject(method = "method_25426", at = @At("TAIL"))
+    @Inject(method = "init", at = @At("TAIL"))
     private void onInit(CallbackInfo info) {
         ButtonWidget button = ButtonWidget.builder(
             Text.literal("Open to Hotspot"),
