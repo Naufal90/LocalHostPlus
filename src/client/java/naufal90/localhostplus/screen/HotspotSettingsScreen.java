@@ -7,10 +7,13 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.client.gui.DrawContext;
+import naufal90.localhostplus.network.Broadcaster;
 
 @Environment(EnvType.CLIENT)
 public class HotspotSettingsScreen extends Screen {
     private final Screen parent;
+    private ButtonWidget startStopButton;
+    private boolean hotspotActive = false;
 
     public HotspotSettingsScreen(Screen parent) {
         super(Text.literal("Hotspot Settings"));
@@ -19,10 +22,10 @@ public class HotspotSettingsScreen extends Screen {
 
     @Override
     protected void init() {
-        this.addDrawableChild(
+        startStopButton = this.addDrawableChild(
             ButtonWidget.builder(
                 Text.literal("Start Server"),
-                button -> startHotspot()
+                button -> toggleHotspot()
             ).position(this.width / 2 - 75, this.height / 2 - 10)
             .size(150, 20).build()
         );
@@ -36,17 +39,39 @@ public class HotspotSettingsScreen extends Screen {
         );
     }
 
-    private void startHotspot() {
-        if (this.client.getServer() instanceof IntegratedServer) {
-    IntegratedServer server = (IntegratedServer) this.client.getServer();
-    server.openToLan(null, false, 25565);
-            if (this.client.player != null) {
-                this.client.player.sendMessage(
-                    Text.literal("[LocalHostPlus] Server berhasil dimulai di jaringan lokal!"),
-                    false
-                );
+    private void toggleHotspot() {
+        if (this.client.getServer() instanceof IntegratedServer server) {
+            if (!hotspotActive) {
+                server.openToLan(null, false, 25565);
+                Broadcaster.startBroadcast(25565);
+
+                try {
+    String localIp = java.net.InetAddress.getLocalHost().getHostAddress();
+    this.client.player.sendMessage(
+        Text.literal("[LocalHostPlus] Hotspot aktif di " + localIp + ":25565"),
+        false
+    );
+} catch (Exception e) {
+    this.client.player.sendMessage(
+        Text.literal("[LocalHostPlus] Hotspot aktif di port 25565"),
+        false
+    );
+                }
+                hotspotActive = true;
+                startStopButton.setMessage(Text.literal("Stop Server"));
+            } else {
+                Broadcaster.stopBroadcast();
+                if (this.client.player != null) {
+                    this.client.player.sendMessage(
+                        Text.literal("[LocalHostPlus] Hotspot dinonaktifkan."),
+                        false
+                    );
+                }
+                hotspotActive = false;
+                startStopButton.setMessage(Text.literal("Start Server"));
             }
         }
+        
         this.client.setScreen(null); // Tutup kembali ke game
     }
 
