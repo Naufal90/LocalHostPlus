@@ -21,7 +21,7 @@ public class HotspotSettingsScreen extends Screen {
     protected void init() {
         this.addDrawableChild(
             ButtonWidget.builder(
-                Text.literal("Start Open to Hotspot"),
+                Text.literal("Start Server"),
                 button -> startHotspot()
             ).position(this.width / 2 - 75, this.height / 2 - 10)
             .size(150, 20).build()
@@ -42,7 +42,7 @@ public class HotspotSettingsScreen extends Screen {
     server.openToLan(null, false, 25565);
             if (this.client.player != null) {
                 this.client.player.sendMessage(
-                    Text.literal("[Hotspot] Server berhasil dimulai di jaringan lokal!"),
+                    Text.literal("[LocalHostPlus] Server berhasil dimulai di jaringan lokal!"),
                     false
                 );
             }
