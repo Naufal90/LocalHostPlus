@@ -29,7 +29,7 @@ public abstract class GameMenuScreenMixin extends Screen {
     @Inject(method = "method_25426", at = @At("TAIL"))
     private void onInit(CallbackInfo info) {
         ButtonWidget button = ButtonWidget.builder(
-            Text.literal("Open to Hotspot"),
+            Text.literal("LocalHostPlus"),
             b -> MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen(this))
         ).position(10, 10).size(150, 20).build();
 
