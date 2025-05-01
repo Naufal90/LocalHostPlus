@@ -25,6 +25,10 @@ dependencies {
 loom {
     splitEnvironmentSourceSets()
 
+   mixin {
+        defaultRefmapName = "localhostplus.refmap.json"
+	}
+
     mods {
         "localhostplus" {
             sourceSet sourceSets.main
