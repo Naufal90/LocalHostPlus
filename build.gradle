@@ -20,7 +20,6 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"  // Pakai variabel dari gradle.properties
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"  // Pakai variabel dari gradle.properties
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"  // Pakai variabel dari gradle.properties
-    compileOnly "org.spongepowered:${project.mixin_version}"
 }
 
 loom {
