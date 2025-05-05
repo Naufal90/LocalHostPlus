@@ -26,7 +26,7 @@ public abstract class GameMenuScreenMixin extends Screen {
         this.addDrawableChild(element);
     }
 
-    @Inject(method = "<init>", at = @At("TAIL"))
+    @Inject(method = "init", at = @At("TAIL"))
     private void onInit(CallbackInfo info) {
         int centerX = this.width / 2;
         int y = this.height / 4 + 72; // Di antara "Report Bugs" dan "Options..."
