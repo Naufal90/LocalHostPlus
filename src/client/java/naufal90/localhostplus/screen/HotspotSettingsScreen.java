@@ -16,7 +16,7 @@ public class HotspotSettingsScreen extends Screen {
     private boolean hotspotActive = false;
 
     public HotspotSettingsScreen(Screen parent) {
-        super(Text.literal("Hotspot Settings"));
+        super(Text.literal("LocalHostPlus Settings"));
         this.parent = parent;
     }
 
@@ -51,12 +51,12 @@ protected void init() {
                 try {
     String localIp = java.net.InetAddress.getLocalHost().getHostAddress();
     this.client.player.sendMessage(
-        Text.literal("[LocalHostPlus] Hotspot aktif di " + localIp + ":25565"),
+        Text.literal("[LocalHostPlus] Server aktif di " + localIp + ":25565"),
         false
     );
 } catch (Exception e) {
     this.client.player.sendMessage(
-        Text.literal("[LocalHostPlus] Hotspot aktif di port 25565"),
+        Text.literal("[LocalHostPlus] Server aktif di port 25565"),
         false
     );
                 }
@@ -66,7 +66,7 @@ protected void init() {
                 Broadcaster.stopBroadcast();
                 if (this.client.player != null) {
                     this.client.player.sendMessage(
-                        Text.literal("[LocalHostPlus] Hotspot dinonaktifkan."),
+                        Text.literal("[LocalHostPlus] Server dinonaktifkan."),
                         false
                     );
                 }
