@@ -21,23 +21,28 @@ public class HotspotSettingsScreen extends Screen {
     }
 
     @Override
-    protected void init() {
-        startStopButton = this.addDrawableChild(
-            ButtonWidget.builder(
-                Text.literal("Start Server"),
-                button -> toggleHotspot()
-            ).position(this.width / 2 - 75, this.height / 2 - 10)
-            .size(150, 20).build()
-        );
-
-        this.addDrawableChild(
-            ButtonWidget.builder(
-                Text.literal("Back"),
-                button -> this.client.setScreen(parent)
-            ).position(this.width / 2 - 75, this.height / 2 + 20)
-            .size(150, 20).build()
-        );
+protected void init() {
+    if (this.client.getServer() instanceof IntegratedServer server) {
+        // Deteksi apakah server sudah open to LAN
+        this.hotspotActive = server.isRemote(); // atau kustom flag jika tidak tersedia
     }
+
+    startStopButton = this.addDrawableChild(
+        ButtonWidget.builder(
+            Text.literal(hotspotActive ? "Stop Server" : "Start Server"),
+            button -> toggleHotspot()
+        ).position(this.width / 2 - 75, this.height / 2 - 10)
+        .size(150, 20).build()
+    );
+
+    this.addDrawableChild(
+        ButtonWidget.builder(
+            Text.literal("Back"),
+            button -> this.client.setScreen(parent)
+        ).position(this.width / 2 - 75, this.height / 2 + 20)
+        .size(150, 20).build()
+    );
+}
 
     private void toggleHotspot() {
         if (this.client.getServer() instanceof IntegratedServer server) {
