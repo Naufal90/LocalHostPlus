@@ -31,27 +31,42 @@ public abstract class GameMenuScreenMixin extends Screen {
 
     @Inject(method = "initWidgets", at = @At("TAIL"))
 private void onInit(CallbackInfo info) {
+    List<ClickableWidget> buttons = ((ScreenAccessor)this).getDrawables().stream()
+        .filter(e -> e instanceof ClickableWidget)
+        .map(e -> (ClickableWidget)e)
+        .collect(Collectors.toList());
+
     int centerX = this.width / 2;
     int buttonWidth = 204;
     int buttonHeight = 20;
+    int spacing = 24;
 
-    // Posisi target untuk tombol LocalHostPlus (di antara "Report Bugs" dan "Options...")
-    int insertY = this.height / 4 + 96;
-
-    // Geser tombol yang berada di bawah posisi target ke bawah
-     List<Drawable> drawables = ((ScreenAccessor)(Object)this).getDrawables();
-
-        for (Drawable drawable : drawables) {
-            if (drawable instanceof ButtonWidget button && button.getY() >= insertY) {
-                button.setY(button.getY() + buttonHeight + 24); // geser ke bawah
-            }
+    // Cari indeks tombol "Options..." sebagai patokan
+    int insertIndex = -1;
+    for (int i = 0; i < buttons.size(); i++) {
+        ClickableWidget b = buttons.get(i);
+        if (b instanceof ButtonWidget btn && btn.getMessage().getString().equals("Options...")) {
+            insertIndex = i;
+            break;
         }
-    // Tambahkan tombol LocalHostPlus
-    ButtonWidget localhostButton = ButtonWidget.builder(
-        Text.literal("LocalHostPlus"),
-        b -> MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen(this))
-    ).position(centerX - buttonWidth / 2, insertY).size(buttonWidth, buttonHeight).build();
+    }
 
-    this.addDrawableChild(localhostButton);
+    // Default posisi Y awal
+    int startY = this.height / 4 + 48;
+
+    if (insertIndex != -1) {
+        ButtonWidget localhostButton = ButtonWidget.builder(
+            Text.literal("LocalHostPlus"),
+            b -> MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen(this))
+        ).dimensions(centerX - buttonWidth / 2, 0, buttonWidth, buttonHeight).build();
+
+        buttons.add(insertIndex, localhostButton);
+    }
+
+    // Atur ulang posisi semua tombol
+    for (int i = 0; i < buttons.size(); i++) {
+        ClickableWidget b = buttons.get(i);
+        b.setY(startY + i * spacing);
+    }
 }
 }
