@@ -55,7 +55,7 @@ public abstract class GameMenuScreenMixin extends Screen {
         ).build();
 
         // 3. Tambahkan tombol ke screen
-        this.addDrawableSelectableElement(localhostButton);
+        this.addDrawableChild(localhostButton);
 
         // 4. Geser tombol di bawahnya ke bawah
         shiftButtonsDown(optionsButton.getY(), localhostButton.getHeight() + 4);
