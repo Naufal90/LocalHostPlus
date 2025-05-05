@@ -3,7 +3,7 @@
   "package": "naufal90.localhostplus.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "GameMenuScreenMixin"
+    "GameMenuScreenMixin",
     "ScreenAccessor"
   ],
   "injectors": {
