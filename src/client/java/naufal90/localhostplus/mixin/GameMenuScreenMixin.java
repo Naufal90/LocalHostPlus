@@ -20,9 +20,9 @@ import java.util.List;
 
 @Mixin(GameMenuScreen.class)
 public abstract class GameMenuScreenMixin extends Screen {
-     //protected GameMenuScreenMixin(Text title) {
-        //super(title);
-    //}
+     protected GameMenuScreenMixin(Text title) {
+        super(title);
+    }
 
     //@Unique
     //private <T extends Element & Drawable & Selectable> void add(T element) {
@@ -39,7 +39,8 @@ private void onInit(CallbackInfo info) {
     int insertY = this.height / 4 + 96;
 
     // Geser tombol yang berada di bawah posisi target ke bawah
-
+     List<Drawable> drawables = ((ScreenAccessor)(Object)this).getDrawables();
+for (Drawable drawable : drawables) {
     // Tambahkan tombol LocalHostPlus
     ButtonWidget localhostButton = ButtonWidget.builder(
         Text.literal("LocalHostPlus"),
@@ -48,7 +49,4 @@ private void onInit(CallbackInfo info) {
 
     this.addDrawableChild(localhostButton);
 }
-    protected GameMenuScreenMixin(Text title) {
-        super(title);
-    }
 }
