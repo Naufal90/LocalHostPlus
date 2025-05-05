@@ -22,10 +22,7 @@ public class HotspotSettingsScreen extends Screen {
 
     @Override
 protected void init() {
-    if (this.client.getServer() instanceof IntegratedServer server) {
-        // Deteksi apakah server sudah open to LAN
-        this.hotspotActive = server.isRemote(); // atau kustom flag jika tidak tersedia
-    }
+    this.hotspotActive = Broadcaster.isBroadcasting();
 
     startStopButton = this.addDrawableChild(
         ButtonWidget.builder(
@@ -35,6 +32,7 @@ protected void init() {
         .size(150, 20).build()
     );
 
+    // tombol Back
     this.addDrawableChild(
         ButtonWidget.builder(
             Text.literal("Back"),
