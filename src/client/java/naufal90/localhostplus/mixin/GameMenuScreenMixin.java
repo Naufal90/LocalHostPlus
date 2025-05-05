@@ -35,27 +35,38 @@ public abstract class GameMenuScreenMixin extends Screen {
     //}
 
      @Inject(method = "initWidgets", at = @At("TAIL"))
-    private void addLocalHostButton(CallbackInfo ci) {
-        // Cari tombol "Options..." sebagai anchor
+    private void insertLocalHostButton(CallbackInfo ci) {
+        // 1. Cari tombol "Give Feedback" dan "Options..."
+        ButtonWidget giveFeedbackBtn = findButton("Give Feedback");
         ButtonWidget optionsBtn = findButton("Options...");
-        if (optionsBtn == null) return;
+        if (giveFeedbackBtn == null || optionsBtn == null) return;
 
-        // Buat tombol full-width (seperti "Back to Game")
-        int buttonWidth = 200; // Lebar standar
-        int buttonHeight = 20;
-        int x = this.width / 2 - buttonWidth / 2; // Posisi tengah
-        int y = optionsBtn.getY() - buttonHeight - 4; // Letakkan di atas "Options..."
+        // 2. Hitung posisi baru (di bawah "Give Feedback", di atas "Options...")
+        int x = optionsBtn.getX();
+        int y = giveFeedbackBtn.getY() + giveFeedbackBtn.getHeight() + 4; // 4px spacing
+        int width = 200; // Lebar standar
+        int height = 20;
 
+        // 3. Buat tombol baru
         ButtonWidget localhostBtn = ButtonWidget.builder(
             Text.literal("LocalHostPlus"),
             btn -> MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen(this))
-        ).dimensions(x, y, buttonWidth, buttonHeight).build();
+        ).dimensions(x, y, width, height).build();
 
-        // Tambahkan ke layar dengan cara yang benar
+        // 4. Tambahkan tombol
         this.addDrawableChild(localhostBtn);
+
+        // 5. Geser semua tombol di bawah "Give Feedback" ke bawah
+        int shiftAmount = height + 4;
+        for (Drawable d : ((ScreenAccessor) this).getDrawables()) {
+            if (d instanceof ButtonWidget btn && btn.getY() >= y) {
+                if (btn != localhostBtn) { // Jangan geser tombol kita sendiri
+                    btn.setY(btn.getY() + shiftAmount);
+                }
+            }
+        }
     }
 
-    // Helper untuk mencari tombol berdasarkan text
     @Unique
     private ButtonWidget findButton(String text) {
         for (Drawable d : ((ScreenAccessor) this).getDrawables()) {
