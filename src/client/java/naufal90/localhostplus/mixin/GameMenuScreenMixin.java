@@ -40,7 +40,12 @@ private void onInit(CallbackInfo info) {
 
     // Geser tombol yang berada di bawah posisi target ke bawah
      List<Drawable> drawables = ((ScreenAccessor)(Object)this).getDrawables();
-for (Drawable drawable : drawables) {
+
+        for (Drawable drawable : drawables) {
+            if (drawable instanceof ButtonWidget button && button.getY() >= insertY) {
+                button.setY(button.getY() + buttonHeight + 24); // geser ke bawah
+            }
+        }
     // Tambahkan tombol LocalHostPlus
     ButtonWidget localhostButton = ButtonWidget.builder(
         Text.literal("LocalHostPlus"),
@@ -48,6 +53,5 @@ for (Drawable drawable : drawables) {
     ).position(centerX - buttonWidth / 2, insertY).size(buttonWidth, buttonHeight).build();
 
     this.addDrawableChild(localhostButton);
-}
 }
 }
