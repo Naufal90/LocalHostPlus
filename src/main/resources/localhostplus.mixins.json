@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "GameMenuScreenMixin"
+    "ScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
