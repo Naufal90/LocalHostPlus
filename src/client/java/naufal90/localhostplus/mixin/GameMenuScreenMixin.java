@@ -34,44 +34,51 @@ public abstract class GameMenuScreenMixin extends Screen {
         //this.addDrawableChild(element);
     //}
 
-    @Inject(method = "initWidgets", at = @At("TAIL"))
-private void onInit(CallbackInfo info) {
-    List<ClickableWidget> buttons = ((ScreenAccessor)this).getDrawables().stream()
-        .filter(e -> e instanceof ClickableWidget)
-        .map(e -> (ClickableWidget)e)
-        .collect(Collectors.toList());
+     @Inject(method = "initWidgets", at = @At("TAIL"))
+    private void addFullWidthButton(CallbackInfo ci) {
+        // 1. Cari tombol "Options..." sebagai anchor
+        ButtonWidget optionsButton = findButton("Options...");
+        if (optionsButton == null) return;
 
-    int centerX = this.width / 2;
-    int buttonWidth = 204;
-    int buttonHeight = 20;
-    int spacing = 24;
-
-    // Cari indeks tombol "Options..." sebagai patokan
-    int insertIndex = -1;
-    for (int i = 0; i < buttons.size(); i++) {
-        ClickableWidget b = buttons.get(i);
-        if (b instanceof ButtonWidget btn && btn.getMessage().getString().equals("Options...")) {
-            insertIndex = i;
-            break;
-        }
-    }
-
-    // Default posisi Y awal
-    int startY = this.height / 4 + 48;
-
-    if (insertIndex != -1) {
+        // 2. Buat tombol full-width
+        int padding = 20; // Margin kiri/kanan
+        int fullWidth = this.width - padding * 2;
+        
         ButtonWidget localhostButton = ButtonWidget.builder(
             Text.literal("LocalHostPlus"),
-            b -> MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen(this))
-        ).dimensions(centerX - buttonWidth / 2, 0, buttonWidth, buttonHeight).build();
+            button -> MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen(this))
+        ).dimensions(
+            padding, // Posisi X (margin kiri)
+            optionsButton.getY(), // Posisi Y sama dengan Options
+            fullWidth,
+            20 // Tinggi standar
+        ).build();
 
-        buttons.add(insertIndex, localhostButton);
+        // 3. Tambahkan tombol ke screen
+        this.addDrawableSelectableElement(localhostButton);
+
+        // 4. Geser tombol di bawahnya ke bawah
+        shiftButtonsDown(optionsButton.getY(), localhostButton.getHeight() + 4);
     }
 
-    // Atur ulang posisi semua tombol
-    for (int i = 0; i < buttons.size(); i++) {
-        ClickableWidget b = buttons.get(i);
-        b.setY(startY + i * spacing);
+    // Helper: Cari tombol berdasarkan teks
+    @Unique
+    private ButtonWidget findButton(String text) {
+        for (Drawable d : ((ScreenAccessor) this).getDrawables()) {
+            if (d instanceof ButtonWidget btn && btn.getMessage().getString().equals(text)) {
+                return btn;
+            }
+        }
+        return null;
     }
-}
+
+    // Helper: Geser tombol di bawah posisi Y tertentu
+    @Unique
+    private void shiftButtonsDown(int yThreshold, int offset) {
+        for (Drawable d : ((ScreenAccessor) this).getDrawables()) {
+            if (d instanceof ButtonWidget btn && btn.getY() >= yThreshold) {
+                btn.setY(btn.getY() + offset);
+            }
+        }
+    }
 }
