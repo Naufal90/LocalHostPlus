@@ -50,3 +50,4 @@ private void onInit(CallbackInfo info) {
 
     this.addDrawableChild(localhostButton);
 }
+}
