@@ -35,33 +35,27 @@ public abstract class GameMenuScreenMixin extends Screen {
     //}
 
      @Inject(method = "initWidgets", at = @At("TAIL"))
-    private void addFullWidthButton(CallbackInfo ci) {
-        // 1. Cari tombol "Options..." sebagai anchor
-        ButtonWidget optionsButton = findButton("Options...");
-        if (optionsButton == null) return;
+    private void addLocalHostButton(CallbackInfo ci) {
+        // Cari tombol "Options..." sebagai anchor
+        ButtonWidget optionsBtn = findButton("Options...");
+        if (optionsBtn == null) return;
 
-        // 2. Buat tombol full-width
-        int padding = 20; // Margin kiri/kanan
-        int fullWidth = this.width - padding * 2;
-        
-        ButtonWidget localhostButton = ButtonWidget.builder(
+        // Buat tombol full-width (seperti "Back to Game")
+        int buttonWidth = 200; // Lebar standar
+        int buttonHeight = 20;
+        int x = this.width / 2 - buttonWidth / 2; // Posisi tengah
+        int y = optionsBtn.getY() - buttonHeight - 4; // Letakkan di atas "Options..."
+
+        ButtonWidget localhostBtn = ButtonWidget.builder(
             Text.literal("LocalHostPlus"),
-            button -> MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen(this))
-        ).dimensions(
-            padding, // Posisi X (margin kiri)
-            optionsButton.getY(), // Posisi Y sama dengan Options
-            fullWidth,
-            20 // Tinggi standar
-        ).build();
+            btn -> MinecraftClient.getInstance().setScreen(new HotspotSettingsScreen(this))
+        ).dimensions(x, y, buttonWidth, buttonHeight).build();
 
-        // 3. Tambahkan tombol ke screen
-        this.addDrawableChild(localhostButton);
-
-        // 4. Geser tombol di bawahnya ke bawah
-        shiftButtonsDown(optionsButton.getY(), localhostButton.getHeight() + 4);
+        // Tambahkan ke layar dengan cara yang benar
+        this.addDrawableChild(localhostBtn);
     }
 
-    // Helper: Cari tombol berdasarkan teks
+    // Helper untuk mencari tombol berdasarkan text
     @Unique
     private ButtonWidget findButton(String text) {
         for (Drawable d : ((ScreenAccessor) this).getDrawables()) {
@@ -70,15 +64,5 @@ public abstract class GameMenuScreenMixin extends Screen {
             }
         }
         return null;
-    }
-
-    // Helper: Geser tombol di bawah posisi Y tertentu
-    @Unique
-    private void shiftButtonsDown(int yThreshold, int offset) {
-        for (Drawable d : ((ScreenAccessor) this).getDrawables()) {
-            if (d instanceof ButtonWidget btn && btn.getY() >= yThreshold) {
-                btn.setY(btn.getY() + offset);
-            }
-        }
     }
 }
