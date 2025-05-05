@@ -17,9 +17,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameMenuScreen.class)
 public abstract class GameMenuScreenMixin extends Screen {
-    protected GameMenuScreenMixin(Text title) {
-        super(title);
-    }
+    @Shadow
+@Final
+private List<Drawable> drawables;
+    //protected GameMenuScreenMixin(Text title) {
+        //super(title);
+    //}
 
     //@Unique
     //private <T extends Element & Drawable & Selectable> void add(T element) {
@@ -50,4 +53,7 @@ private void onInit(CallbackInfo info) {
 
     this.addDrawableChild(localhostButton);
 }
+    protected GameMenuScreenMixin(Text title) {
+        super(title);
+    }
 }
