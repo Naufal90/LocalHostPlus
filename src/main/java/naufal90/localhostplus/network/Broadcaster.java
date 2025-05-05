@@ -39,4 +39,8 @@ public class Broadcaster {
         } catch (InterruptedException ignored) {}
     }
 }
+
+    public static boolean isBroadcasting() {
+    return running;
+    }
 }
