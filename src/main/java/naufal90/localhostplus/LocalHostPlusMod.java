@@ -16,7 +16,10 @@ public class LocalHostPlusMod implements ModInitializer {
 
         Dummy.forceInit();
         System.out.println(ModConfig.serverMotd);
-        Broadcaster.stopBroadcast(); // dummy call
+        Broadcaster.stopBroadcast();
+        PlayerUUIDManager.init();
+        PlayerDataManager.init();
+        // dummy call
         // Register your screen & networking
         //screen.HotspotScreen.register();
         //network.ClientDiscovery.init();
