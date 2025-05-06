@@ -11,6 +11,24 @@ public class ModConfig {
     public static String gameModeId = "survival"; // "creative", "adventure", etc.
 
     public static void saveConfig() {
-        // TODO: optional, for saving to file
+        try (FileWriter writer = new FileWriter("config/localhostplus.json")) {
+            new Gson().toJson(this, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Load dari file
+    public static void loadConfig() {
+        File file = new File("config/localhostplus.json");
+        if (file.exists()) {
+            try (FileReader reader = new FileReader(file)) {
+                ModConfig config = new Gson().fromJson(reader, ModConfig.class);
+                maxPlayers = config.maxPlayers;
+                offlineMode = config.offlineMode;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
