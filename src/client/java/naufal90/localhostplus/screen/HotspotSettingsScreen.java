@@ -43,11 +43,11 @@ protected void init() {
 
     // GAMEMODE button
     gameModeButton = this.addDrawableChild(
-        CyclingButtonWidget.builder(GameType::getShortDisplayName)
-            .values(GameType.SURVIVAL, GameType.CREATIVE, GameType.ADVENTURE, GameType.SPECTATOR)
-            .initially(GameType.byId(ModConfig.gamemodeId))
-            .build(centerX - 75, y, 150, 20, Text.literal("Gamemode"))
-    );
+    CyclingButtonWidget.<GameMode>builder(GameMode::getSimpleTranslatableName)
+        .values(GameMode.values())
+        .initially(GameMode.byId(ModConfig.gamemodeId))
+        .build(centerX - 75, y, 150, 20, Text.literal("Gamemode"))
+);
     y += 24;
 
     // PVP toggle
@@ -88,11 +88,11 @@ protected void init() {
             ModConfig.allowCheats = commandToggle.getValue();
 
             // Jalankan server dengan konfigurasi
-            server.setDefaultGameType(gameModeButton.getValue());
-            server.setPvpAllowed(ModConfig.allowPvp);
-            server.getPlayerList().setAllowCheatsForAllPlayers(ModConfig.allowCheats);
+            server.setDefaultGameMode(gameModeButton.getValue());
+            server.setPvpEnabled(ModConfig.allowPvp);
+            server.getPlayerManager().setCheatsAllowed(ModConfig.allowCheats);
             server.setUsesAuthentication(false); // misal untuk LAN
-            server.openToLan(null, ModConfig.allowCheats, ModConfig.serverPort);
+            server.setServerPort(ModConfig.serverPort);
 
             Broadcaster.startBroadcast(ModConfig.serverPort);
 
