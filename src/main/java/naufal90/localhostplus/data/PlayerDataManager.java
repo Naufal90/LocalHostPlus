@@ -53,7 +53,6 @@ public class PlayerDataManager {
         Vec3d pos = player.getPos();
         data.put("position", new double[]{pos.x, pos.y, pos.z});
         
-        new File(DATA_DIR).mkdirs(); // pastikan folder ada
         File file = new File(DATA_DIR + player.getUuidAsString() + ".json");
 
         try (FileWriter writer = new FileWriter(file)) {
@@ -86,8 +85,11 @@ public class PlayerDataManager {
                     double z = ((Number) posListRaw.get(2)).doubleValue();
                     player.requestTeleport(x, y, z);
                 } catch (Exception e) {
-            e.printStackTrace();
-            player.sendMessage(Text.literal("Gagal memuat data pemain."), false);
+                    e.printStackTrace();
+                    player.sendMessage(Text.literal("Gagal memuat data pemain."), false);
+                }
+            }
         }
     }
 }
+    
