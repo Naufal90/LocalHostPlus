@@ -7,6 +7,9 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.CyclingButtonWidget;
+import net.minecraft.world.GameMode;  // Ganti dari GameType ke GameMode
 import naufal90.localhostplus.network.Broadcaster;
 import naufal90.localhostplus.screen.ToggleButtonWidget;
 
