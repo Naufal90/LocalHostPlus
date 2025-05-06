@@ -2,6 +2,8 @@ package naufal90.localhostplus.screen;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -9,6 +11,8 @@ import net.minecraft.text.Text;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.world.GameMode;  // Ganti dari GameType ke GameMode
 import naufal90.localhostplus.network.Broadcaster;
 import naufal90.localhostplus.screen.ToggleButtonWidget;
@@ -17,9 +21,11 @@ import naufal90.localhostplus.config.ModConfig;
 @Environment(EnvType.CLIENT)
 public class HotspotSettingsScreen extends Screen {
     private final Screen parent;
+    private boolean isWorldRunning;
     private ButtonWidget startStopButton;
     private boolean hotspotActive = false;
     private TextFieldWidget portField;
+    private TextFieldWidget maxPlayersField;
     private CyclingButtonWidget<GameMode> gameModeButton;
     private ToggleButtonWidget pvpToggle;
     private ToggleButtonWidget commandToggle;
@@ -33,8 +39,12 @@ public class HotspotSettingsScreen extends Screen {
     @Override
 protected void init() {
     this.hotspotActive = Broadcaster.isBroadcasting();
+    
+    // Cek status world
+    isWorldRunning = Minecraft.getInstance().getSingleplayerServer() != null;
+    
     int centerX = this.width / 2;
-int y = this.height / 2 - 60;
+    int y = this.height / 2 - 60;
 
 // ====================== PORT FIELD ======================
 portField = new TextFieldWidget(
@@ -50,6 +60,27 @@ portField.setTooltip(Tooltip.of(
     Text.literal("Port server (default: 25565)\nGunakan port 1024-65535")
 ));
 this.addDrawableChild(portField);
+y += 24;
+
+ // ====================== MAX PLAYERS FIELD ======================
+  maxPlayersField = new TextFieldWidget(
+    textRenderer, centerX - 75, y, 150, 20, Text.literal("Max Players")
+);
+maxPlayersField.setText(String.valueOf(ModConfig.maxPlayers));
+maxPlayersField.setTooltip(Tooltip.of(Text.literal("Maksimal pemain yang bisa join (1-20)"))); // Jangan lupa tooltip!
+maxPlayersField.setChangedListener(text -> {
+    try {
+        int newMax = Integer.parseInt(text);
+        if (isWorldRunning() && newMax != ModConfig.maxPlayers) {
+            maxPlayersField.setMessage(Text.literal("§cRestart world terlebih dahulu!"));
+            return;
+        }
+        ModConfig.maxPlayers = MathHelper.clamp(newMax, 1, 20);
+    } catch (NumberFormatException e) {
+        maxPlayersField.setMessage(Text.literal("§cHarus angka antara 1-20!"));
+    }
+});
+addDrawableChild(maxPlayersField);
 y += 24;
 
 // ====================== GAMEMODE BUTTON ======================
@@ -141,6 +172,7 @@ this.addDrawableChild(
         if (!hotspotActive) {
             // Ambil data dari UI lalu simpan ke ModConfig
             ModConfig.serverPort = parsePort(portField.getText());
+            ModConfig.maxPlayers = maxPlayers;
             ModConfig.gamemodeId = gameModeButton.getValue().getId();
             ModConfig.allowPvp = pvpToggle.getValue();
             ModConfig.allowCheats = commandToggle.getValue();
