@@ -5,6 +5,7 @@ public class ModConfig {
     public static int serverPort = 25565;
     public static String serverMotd = "LocalHostPlus Server!";
     public static boolean pvp = true;
+    public static boolean onlineMode = false;
     public static boolean allowCommands = true;
     public static int maxPlayers = 8;
     public static String gameMode = "survival"; // "creative", "adventure", etc.
