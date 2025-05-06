@@ -52,7 +52,8 @@ public class PlayerDataManager {
         // Simpan posisi
         Vec3d pos = player.getPos();
         data.put("position", new double[]{pos.x, pos.y, pos.z});
-
+        
+        new File(DATA_DIR).mkdirs(); // pastikan folder ada
         File file = new File(DATA_DIR + player.getUuidAsString() + ".json");
 
         try (FileWriter writer = new FileWriter(file)) {
@@ -77,11 +78,14 @@ public class PlayerDataManager {
             player.getInventory().readNbt(invCompound);
             
             // Teleport ke posisi
-            List<Double> posList = (List<Double>) data.get("position");
-            if (posList != null && posList.size() == 3) {
-                player.requestTeleport(posList.get(0), posList.get(1), posList.get(2));
-            }
-        } catch (Exception e) {
+            List<?> posListRaw = (List<?>) data.get("position");
+            if (posListRaw != null && posListRaw.size() == 3) {
+                try {
+                    double x = ((Number) posListRaw.get(0)).doubleValue();
+                    double y = ((Number) posListRaw.get(1)).doubleValue();
+                    double z = ((Number) posListRaw.get(2)).doubleValue();
+                    player.requestTeleport(x, y, z);
+                } catch (Exception e) {
             e.printStackTrace();
             player.sendMessage(Text.literal("Gagal memuat data pemain."), false);
         }
