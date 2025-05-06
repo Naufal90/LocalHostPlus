@@ -12,6 +12,7 @@ import net.minecraft.client.gui.widget.CyclingButtonWidget;
 import net.minecraft.world.GameMode;  // Ganti dari GameType ke GameMode
 import naufal90.localhostplus.network.Broadcaster;
 import naufal90.localhostplus.screen.ToggleButtonWidget;
+import naufal90.localhostplus.config.ModConfig;
 
 @Environment(EnvType.CLIENT)
 public class HotspotSettingsScreen extends Screen {
@@ -22,6 +23,7 @@ public class HotspotSettingsScreen extends Screen {
     private CyclingButtonWidget<GameMode> gameModeButton;
     private ToggleButtonWidget pvpToggle;
     private ToggleButtonWidget commandToggle;
+    private ToggleButtonWidget onlineModeToggle;
 
     public HotspotSettingsScreen(Screen parent) {
         super(Text.literal("LocalHostPlus Settings"));
@@ -35,39 +37,66 @@ protected void init() {
     int centerX = this.width / 2;
     int y = this.height / 2 - 60;
 
-    // PORT field
-    portField = new TextFieldWidget(this.textRenderer, centerX - 75, y, 150, 20, Text.literal("Port"));
-    portField.setText(String.valueOf(ModConfig.serverPort));
-    this.addDrawableChild(portField);
-    y += 24;
+    // PORT Field
+portField = new TextFieldWidget(this.textRenderer, centerX - 75, y, 150, 20, Text.literal("Port"));
+portField.setText(String.valueOf(ModConfig.serverPort));
+portField.setTooltip(Tooltip.of(Text.literal("Port server (default: 25565)\nGunakan port 1024-65535")));
+this.addDrawableChild(portField);
+y += 24;
 
-    // GAMEMODE button
-    gameModeButton = this.addDrawableChild(
+// GAMEMODE Button
+gameModeButton = this.addDrawableChild(
     CyclingButtonWidget.<GameMode>builder(GameMode::getSimpleTranslatableName)
         .values(GameMode.values())
         .initially(GameMode.byId(ModConfig.gamemodeId))
         .build(centerX - 75, y, 150, 20, Text.literal("Gamemode"))
 );
-    y += 24;
+gameModeButton.setTooltip(Tooltip.of(Text.literal("Atur mode permainan default\nSurvival/Creative/Adventure/Spectator")));
+y += 24;
 
-    // PVP toggle
-    pvpToggle = new ToggleButtonWidget(centerX - 75, y, 150, 20, "PVP", ModConfig.allowPvp);
-    this.addDrawableChild(pvpToggle);
-    y += 24;
+// ONLINE MODE Toggle
+onlineModeToggle = new ToggleButtonWidget(
+    centerX - 75, y, 150, 20,
+    "Online Mode", 
+    ModConfig.onlineMode
+);
+onlineModeToggle.setTooltip(Tooltip.of(Text.literal(
+    "ON: Hanya pemain premium bisa join\n" +
+    "OFF: Semua pemain bisa join (offline mode)")
+));
+this.addDrawableChild(onlineModeToggle);
+y += 24;
 
-    // COMMAND toggle
-    commandToggle = new ToggleButtonWidget(centerX - 75, y, 150, 20, "Enable Commands", ModConfig.allowCheats);
-    this.addDrawableChild(commandToggle);
-    y += 30;
+// PVP Toggle
+pvpToggle = new ToggleButtonWidget(centerX - 75, y, 150, 20, "PVP", ModConfig.allowPvp);
+pvpToggle.setTooltip(Tooltip.of(Text.literal(
+    "Aktifkan untuk izinkan PvP antar pemain\n" +
+    "Nonaktifkan untuk mode damai")
+));
+this.addDrawableChild(pvpToggle);
+y += 24;
 
-    // START / STOP
-    startStopButton = this.addDrawableChild(
-        ButtonWidget.builder(Text.literal(hotspotActive ? "Stop Server" : "Start Server"), btn -> toggleHotspot())
-            .position(centerX - 75, y)
-            .size(150, 20)
-            .build()
-    );
-    y += 24;
+// COMMAND Toggle
+commandToggle = new ToggleButtonWidget(centerX - 75, y, 150, 20, "Enable Commands", ModConfig.allowCheats);
+commandToggle.setTooltip(Tooltip.of(Text.literal(
+    "Aktifkan untuk izinkan perintah cheat\n" +
+    "Contoh: /gamemode, /give, dll")
+));
+this.addDrawableChild(commandToggle);
+y += 30;
+
+// START/STOP Button
+startStopButton = this.addDrawableChild(
+    ButtonWidget.builder(Text.literal(hotspotActive ? "Stop Server" : "Start Server"), btn -> toggleHotspot())
+        .position(centerX - 75, y)
+        .size(150, 20)
+        .tooltip(Tooltip.of(Text.literal(
+            hotspotActive ? "Matikan server hotspot" : 
+            "Nyalakan server dan broadcast ke jaringan lokal")
+        ))
+        .build()
+);
+y += 24;    
 
     // BACK
     this.addDrawableChild(
@@ -86,12 +115,13 @@ protected void init() {
             ModConfig.gamemodeId = gameModeButton.getValue().getId();
             ModConfig.allowPvp = pvpToggle.getValue();
             ModConfig.allowCheats = commandToggle.getValue();
+            ModConfig.onlineMode = onlineModeToggle.getvalue();
 
             // Jalankan server dengan konfigurasi
             server.setDefaultGameMode(gameModeButton.getValue());
             server.setPvpEnabled(ModConfig.allowPvp);
             server.getPlayerManager().setCheatsAllowed(ModConfig.allowCheats);
-            server.setUsesAuthentication(false); // misal untuk LAN
+            server.setOnlineMode(ModConfig.onlineMode);
             server.setServerPort(ModConfig.serverPort);
 
             Broadcaster.startBroadcast(ModConfig.serverPort);
