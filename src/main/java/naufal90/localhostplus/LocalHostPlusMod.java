@@ -23,10 +23,3 @@ public class LocalHostPlusMod implements ModInitializer {
     }
 }
 
-@Mod("localhostplus")
-public class LocalHostPlusMod {
-    public LocalHostPlusMod() {
-        MinecraftForge.EVENT_BUS.register(PlayerUUIDManager.class);
-        MinecraftForge.EVENT_BUS.register(PlayerDataManager.class);
-    }
-}
