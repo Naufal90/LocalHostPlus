@@ -4,11 +4,11 @@ public class ModConfig {
     public static boolean autoBroadcast = true;
     public static int serverPort = 25565;
     public static String serverMotd = "LocalHostPlus Server!";
-    public static boolean pvp = true;
+    public static boolean allowPvp = true;
     public static boolean onlineMode = false;
-    public static boolean allowCommands = true;
+    public static boolean allowCheats = true;
     public static int maxPlayers = 8;
-    public static String gameMode = "survival"; // "creative", "adventure", etc.
+    public static String gameModeId = "survival"; // "creative", "adventure", etc.
 
     public static void saveConfig() {
         // TODO: optional, for saving to file
