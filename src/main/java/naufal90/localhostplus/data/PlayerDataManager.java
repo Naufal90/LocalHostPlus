@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
@@ -44,9 +45,10 @@ public class PlayerDataManager {
         Map<String, Object> data = new HashMap<>();
 
         // Simpan inventory sebagai NbtCompound dan ubah jadi String
-        NbtList inventoryNbt = player.getInventory().writeNbt(new NbtList());
-        data.put("inventory", inventoryNbt.asString());
-
+        NbtCompound invCompound = new NbtCompound();
+        player.getInventory().writeNbt(invCompound);
+        data.put("inventory", invCompound.toString()); // simpan sebagai string
+        
         // Simpan posisi
         Vec3d pos = player.getPos();
         data.put("position", new double[]{pos.x, pos.y, pos.z});
@@ -70,11 +72,10 @@ public class PlayerDataManager {
             Map<String, Object> data = gson.fromJson(reader, type);
 
             // Load inventory dari string NBT
-            String invStr = (String) data.get("inventory");
-            NbtList invNbt = (NbtList) NbtIo.readCompressed(new ByteArrayInputStream(invStr.getBytes()));
-
-            player.getInventory().readNbt(invNbt);
-
+           String invStr = (String) data.get("inventory");
+            NbtCompound invCompound = StringNbtReader.parse(invStr);
+            player.getInventory().readNbt(invCompound);
+            
             // Teleport ke posisi
             List<Double> posList = (List<Double>) data.get("position");
             if (posList != null && posList.size() == 3) {
