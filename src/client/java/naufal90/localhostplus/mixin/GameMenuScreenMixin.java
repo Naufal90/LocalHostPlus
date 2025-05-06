@@ -44,7 +44,7 @@ public abstract class GameMenuScreenMixin extends Screen {
         // 2. Hitung posisi baru (di bawah "Give Feedback", di atas "Options...")
         int x = optionsBtn.getX();
         int y = giveFeedbackBtn.getY() + giveFeedbackBtn.getHeight() + 4; // 4px spacing
-        int width = 200; // Lebar standar
+        int width = optionsBtn.getWidth(); // Lebar standar
         int height = 20;
 
         // 3. Buat tombol baru
