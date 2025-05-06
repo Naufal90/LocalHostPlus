@@ -19,7 +19,7 @@ public class HotspotSettingsScreen extends Screen {
     private ButtonWidget startStopButton;
     private boolean hotspotActive = false;
     private TextFieldWidget portField;
-    private CyclingButtonWidget<GameType> gameModeButton;
+    private CyclingButtonWidget<GameMode> gameModeButton;
     private ToggleButtonWidget pvpToggle;
     private ToggleButtonWidget commandToggle;
 
