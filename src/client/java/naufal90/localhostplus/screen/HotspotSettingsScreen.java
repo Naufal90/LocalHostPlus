@@ -166,7 +166,7 @@ this.addDrawableChild(
         .size(150, 20)
         .build()
 );
-    
+}
     private void toggleHotspot() {
     if (this.client.getServer() instanceof IntegratedServer server) {
         if (!hotspotActive) {
@@ -217,7 +217,7 @@ private int parsePort(String text) {
         return Integer.parseInt(text);
     } catch (NumberFormatException e) {
         return 25565; // fallback
-    }
+}
 }
 
     @Override
