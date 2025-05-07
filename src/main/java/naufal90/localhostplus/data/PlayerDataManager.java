@@ -45,9 +45,8 @@ public class PlayerDataManager {
         Map<String, Object> data = new HashMap<>();
 
         // Simpan inventory sebagai NbtCompound dan ubah jadi String
-        NbtCompound invCompound = new NbtCompound();
-        player.getInventory().writeNbt(invCompound);
-        data.put("inventory", invCompound.toString()); // simpan sebagai string
+        NbtList invList = player.getInventory().writeNbt(new NbtList());
+        data.put("inventory", invList.toString());
         
         // Simpan posisi
         Vec3d pos = player.getPos();
@@ -73,8 +72,8 @@ public class PlayerDataManager {
 
             // Load inventory dari string NBT
            String invStr = (String) data.get("inventory");
-            NbtCompound invCompound = StringNbtReader.parse(invStr);
-            player.getInventory().readNbt(invCompound);
+            NbtList invList = (NbtList) StringNbtReader.parse(invStr);
+            player.getInventory().readNbt(invList);
             
             // Teleport ke posisi
             List<?> posListRaw = (List<?>) data.get("position");
