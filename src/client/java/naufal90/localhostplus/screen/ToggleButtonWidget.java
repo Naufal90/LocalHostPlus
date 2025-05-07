@@ -18,7 +18,7 @@ public class ToggleButtonWidget extends ButtonWidget {
     }
 
     @Override
-    public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         // Custom rendering jika diperlukan
         super.render(context, mouseX, mouseY, delta);
     }
