@@ -177,7 +177,7 @@ this.addDrawableChild(
             ModConfig.gameModeId = gameModeButton.getValue().getId();
             ModConfig.allowPvp = pvpToggle.getValue();
             ModConfig.allowCheats = commandToggle.getValue();
-            ModConfig.onlineMode = onlineModeToggle.getvalue();
+            ModConfig.onlineMode = onlineModeToggle.getValue();
 
             // Jalankan server dengan konfigurasi
             server.setDefaultGameMode(gameModeButton.getValue());
