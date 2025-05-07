@@ -79,44 +79,50 @@ public class PlayerDataManager {
     
 
     @SuppressWarnings("unchecked")
-    public static void loadPlayerData(ServerPlayerEntity player) {
-        File file = new File(DATA_DIR + player.getUuidAsString() + ".json");
-        if (!file.exists()) return;
+public static void loadPlayerData(ServerPlayerEntity player) {
+    File file = new File(DATA_DIR + player.getUuidAsString() + ".json");
+    if (!file.exists()) return;
 
-        try (FileReader reader = new FileReader(file)) {
-            Type type = new TypeToken<Map<String, Object>>() {}.getType();
-            Map<String, Object> data = gson.fromJson(reader, type);
+    try (FileReader reader = new FileReader(file)) {
+        Type type = new TypeToken<Map<String, Object>>() {}.getType();
+        Map<String, Object> data = gson.fromJson(reader, type);
 
-            // Load inventory dari string NBT
-           String encoded = (String) data.get("inventory");
+        // Load inventory dari Base64 string
+        if (data.containsKey("inventory")) {
+            String encoded = (String) data.get("inventory");
             byte[] bytes = Base64.getDecoder().decode(encoded);
             NbtCompound wrapper = NbtIo.readCompressed(new ByteArrayInputStream(bytes));
             NbtList invList = wrapper.getList("inventory", NbtElement.COMPOUND_TYPE);
             player.getInventory().readNbt(invList);
-            
-            // Teleport ke posisi
+        }
+
+        // Teleport ke posisi
+        if (data.containsKey("position")) {
             List<?> posListRaw = (List<?>) data.get("position");
-            if (posListRaw != null && posListRaw.size() == 3) {
-                    double x = ((Number) posListRaw.get(0)).doubleValue();
-                    double y = ((Number) posListRaw.get(1)).doubleValue();
-                    double z = ((Number) posListRaw.get(2)).doubleValue();
-                    player.requestTeleport(x, y, z);
-                    // Pulihkan status player
-                    if (data.containsKey("health")) {
-                        player.setHealth(((Number) data.get("health")).floatValue());
-                    }
-                    if (data.containsKey("foodLevel") && data.containsKey("saturation")) {
-                        player.getHungerManager().setFoodLevel(((Number) data.get("foodLevel")).intValue());
-                        player.getHungerManager().setSaturationLevel(((Number) data.get("saturation")).floatValue());
-                    }
-                    if (data.containsKey("experience") && data.containsKey("expProgress")) {
-                        player.experienceLevel = ((Number) data.get("experience")).intValue();
-                        player.experienceProgress = ((Number) data.get("expProgress")).floatValue();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    player.sendMessage(Text.literal("Gagal memuat data pemain."), false);
-                }
+            if (posListRaw.size() == 3) {
+                double x = ((Number) posListRaw.get(0)).doubleValue();
+                double y = ((Number) posListRaw.get(1)).doubleValue();
+                double z = ((Number) posListRaw.get(2)).doubleValue();
+                player.requestTeleport(x, y, z);
             }
+        }
+
+        // Pulihkan status player
+        if (data.containsKey("health")) {
+            player.setHealth(((Number) data.get("health")).floatValue());
+        }
+        if (data.containsKey("foodLevel") && data.containsKey("saturation")) {
+            player.getHungerManager().setFoodLevel(((Number) data.get("foodLevel")).intValue());
+            player.getHungerManager().setSaturationLevel(((Number) data.get("saturation")).floatValue());
+        }
+        if (data.containsKey("experience") && data.containsKey("expProgress")) {
+            player.experienceLevel = ((Number) data.get("experience")).intValue();
+            player.experienceProgress = ((Number) data.get("expProgress")).floatValue();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        player.sendMessage(Text.literal("Gagal memuat data pemain."), false);
+    }
+}
 }
     
