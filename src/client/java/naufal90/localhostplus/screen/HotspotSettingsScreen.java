@@ -41,7 +41,7 @@ protected void init() {
     this.hotspotActive = Broadcaster.isBroadcasting();
     
     // Cek status world
-    isWorldRunning = Minecraft.getInstance().getSingleplayerServer() != null;
+    isWorldRunning = MinecraftClient.getInstance().getServer() != null;
     
     int centerX = this.width / 2;
     int y = this.height / 2 - 60;
