@@ -38,130 +38,53 @@ public class HotspotSettingsScreen extends Screen {
     @Override
 protected void init() {
     this.hotspotActive = Broadcaster.isBroadcasting();
-    
-    int centerX = this.width / 2;
-    int y = this.height / 2 - 60;
 
-// ====================== PORT FIELD ======================
-portField = new TextFieldWidget(
-    this.textRenderer, 
-    centerX - 75, 
-    y, 
-    150, 
-    20, 
-    Text.literal("Port")
-);
-portField.setText(String.valueOf(ModConfig.serverPort));
-portField.setTooltip(Tooltip.of(
-    Text.literal("Port server (default: 25565)\nGunakan port 1024-65535")
-));
-this.addDrawableChild(portField);
-y += 24;
+    int col1X = this.width / 4 - 75;     // Kolom kiri
+    int col2X = this.width * 3 / 4 - 75; // Kolom kanan
+    int y = this.height / 2 - 70;
+    int spacingY = 24;
 
- // ====================== MAX PLAYERS FIELD ======================
-  maxPlayersField = new TextFieldWidget(
-    textRenderer, centerX - 75, y, 150, 20, Text.literal("Max Players")
-);
-maxPlayersField.setText(String.valueOf(ModConfig.maxPlayers));
-maxPlayersField.setTooltip(Tooltip.of(Text.literal("Maksimal pemain yang bisa join (1-20)"))); // Jangan lupa tooltip!
-maxPlayersField.setChangedListener(text -> {
-    try {
-        int newMax = Integer.parseInt(text);
-        if (isWorldRunning() && newMax != ModConfig.maxPlayers) {
-            maxPlayersField.setMessage(Text.literal("§cRestart world terlebih dahulu!"));
-            return;
-        }
-        ModConfig.maxPlayers = MathHelper.clamp(newMax, 1, 20);
-    } catch (NumberFormatException e) {
-        maxPlayersField.setMessage(Text.literal("§cHarus angka antara 1-20!"));
-    }
-});
-addDrawableChild(maxPlayersField);
-y += 24;
+    // Baris 1
+    commandToggle = new ToggleButtonWidget(col1X, y, 150, 20, "Enable Commands", ModConfig.allowCheats);
+    this.addDrawableChild(commandToggle);
 
-// ====================== GAMEMODE BUTTON ======================
-gameModeButton = this.addDrawableChild(
-    CyclingButtonWidget.<GameMode>builder(GameMode::getSimpleTranslatableName)
+    onlineModeToggle = new ToggleButtonWidget(col2X, y, 150, 20, "Online Mode", ModConfig.onlineMode);
+    this.addDrawableChild(onlineModeToggle);
+    y += spacingY;
+
+    // Baris 2
+    pvpToggle = new ToggleButtonWidget(col1X, y, 150, 20, "PVP", ModConfig.allowPvp);
+    this.addDrawableChild(pvpToggle);
+
+    gameModeButton = CyclingButtonWidget.<GameMode>builder(GameMode::getSimpleTranslatableName)
         .values(GameMode.values())
         .initially(GameMode.byId(ModConfig.gameModeId))
-        .build(centerX - 75, y, 150, 20, Text.literal("Gamemode"))
-);
-gameModeButton.setTooltip(Tooltip.of(
-    Text.literal("Atur mode permainan default\nSurvival/Creative/Adventure/Spectator")
-));
-y += 24;
+        .build(col2X, y, 150, 20, Text.literal("Gamemode"));
+    this.addDrawableChild(gameModeButton);
+    y += spacingY;
 
-// ====================== ONLINE MODE TOGGLE ======================
-onlineModeToggle = new ToggleButtonWidget(
-    centerX - 75, 
-    y, 
-    150, 
-    20, 
-    "Online Mode", 
-    ModConfig.onlineMode
-);
-onlineModeToggle.setTooltip(Tooltip.of(Text.literal(
-    "ON: Hanya pemain premium bisa join\n" +
-    "OFF: Semua pemain bisa join (offline mode)"
-)));
-this.addDrawableChild(onlineModeToggle);
-y += 24;
+    // Baris 3
+    portField = new TextFieldWidget(textRenderer, col1X, y, 150, 20, Text.literal("Port"));
+    portField.setText(String.valueOf(ModConfig.serverPort));
+    this.addDrawableChild(portField);
 
-// ====================== PVP TOGGLE ======================
-pvpToggle = new ToggleButtonWidget(
-    centerX - 75, 
-    y, 
-    150, 
-    20, 
-    "PVP", 
-    ModConfig.allowPvp
-);
-pvpToggle.setTooltip(Tooltip.of(Text.literal(
-    "Aktifkan untuk izinkan PvP antar pemain\n" +
-    "Nonaktifkan untuk mode damai"
-)));
-this.addDrawableChild(pvpToggle);
-y += 24;
+    maxPlayersField = new TextFieldWidget(textRenderer, col2X, y, 150, 20, Text.literal("Max Players"));
+    maxPlayersField.setText(String.valueOf(ModConfig.maxPlayers));
+    this.addDrawableChild(maxPlayersField);
+    y += spacingY;
 
-// ====================== COMMAND TOGGLE ======================
-commandToggle = new ToggleButtonWidget(
-    centerX - 75, 
-    y, 
-    150, 
-    20, 
-    "Enable Commands", 
-    ModConfig.allowCheats
-);
-commandToggle.setTooltip(Tooltip.of(Text.literal(
-    "Aktifkan untuk izinkan perintah cheat\n" +
-    "Contoh: /gamemode, /give, dll"
-)));
-this.addDrawableChild(commandToggle);
-y += 30;
-
-// ====================== START/STOP BUTTON ======================
-startStopButton = this.addDrawableChild(
-    ButtonWidget.builder(
-        Text.literal(hotspotActive ? "Stop Server" : "Start Server"), 
+    // Baris 4
+    startStopButton = ButtonWidget.builder(
+        Text.literal(hotspotActive ? "Stop Server" : "Start Server"),
         btn -> toggleHotspot()
-    )
-    .position(centerX - 75, y)
-    .size(150, 20)
-    .tooltip(Tooltip.of(Text.literal(
-        hotspotActive ? "Matikan server hotspot" : 
-        "Nyalakan server dan broadcast ke jaringan lokal"
-    )))
-    .build()
-);
-y += 24;
+    ).position(col1X, y).size(150, 20).build();
+    this.addDrawableChild(startStopButton);
 
-// ====================== BACK BUTTON ======================
-this.addDrawableChild(
-    ButtonWidget.builder(Text.literal("Back"), btn -> this.client.setScreen(parent))
-        .position(centerX - 75, y)
+    this.addDrawableChild(ButtonWidget.builder(Text.literal("Back"), btn -> this.client.setScreen(parent))
+        .position(col2X, y)
         .size(150, 20)
         .build()
-);
+    );
 }
 
     private boolean isWorldRunning() {
