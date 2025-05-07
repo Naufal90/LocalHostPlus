@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.nbt.*;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
@@ -19,6 +20,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Base64
 
 public class PlayerDataManager {
     private static final String DATA_DIR = "config/localhostplus/playerdata/";
@@ -45,8 +47,14 @@ public class PlayerDataManager {
         Map<String, Object> data = new HashMap<>();
 
         // Simpan inventory sebagai NbtCompound dan ubah jadi String
+        // Simpan inventory sebagai NbtList (pakai NbtIo untuk encode)
         NbtList invList = player.getInventory().writeNbt(new NbtList());
-        data.put("inventory", invList.toString());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        NbtIo.writeCompressed(new NbtCompound() {{
+            put("inventory", invList);
+        }}, out);
+        String encoded = Base64.getEncoder().encodeToString(out.toByteArray());
+        data.put("inventory", encoded);
         
         // Simpan posisi
         Vec3d pos = player.getPos();
@@ -71,8 +79,10 @@ public class PlayerDataManager {
             Map<String, Object> data = gson.fromJson(reader, type);
 
             // Load inventory dari string NBT
-           String invStr = (String) data.get("inventory");
-            NbtList invList = (NbtList) StringNbtReader.parse(invStr);
+           String encoded = (String) data.get("inventory");
+            byte[] bytes = Base64.getDecoder().decode(encoded);
+            NbtCompound wrapper = NbtIo.readCompressed(new ByteArrayInputStream(bytes));
+            NbtList invList = wrapper.getList("inventory", NbtElement.COMPOUND_TYPE);
             player.getInventory().readNbt(invList);
             
             // Teleport ke posisi
