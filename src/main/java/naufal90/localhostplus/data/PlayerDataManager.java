@@ -45,8 +45,7 @@ public class PlayerDataManager {
 
     public static void savePlayerData(ServerPlayerEntity player) {
         Map<String, Object> data = new HashMap<>();
-
-        // Simpan inventory sebagai NbtCompound dan ubah jadi String
+        try {
         // Simpan inventory sebagai NbtList (pakai NbtIo untuk encode)
         NbtList invList = player.getInventory().writeNbt(new NbtList());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
