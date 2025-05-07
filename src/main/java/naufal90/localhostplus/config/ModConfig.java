@@ -59,7 +59,7 @@ public class ModConfig {
         boolean onlineMode;
         boolean allowCheats;
         int maxPlayers;
-        String gameModeId;
+        int gameModeId;
 
         public ConfigData() {
             this.autoBroadcast = ModConfig.autoBroadcast;
