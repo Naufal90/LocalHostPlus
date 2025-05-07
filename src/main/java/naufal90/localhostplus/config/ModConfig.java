@@ -15,7 +15,7 @@ public class ModConfig {
     public static boolean onlineMode = false;
     public static boolean allowCheats = true;
     public static int maxPlayers = 8;
-    public static String gameModeId = "survival";
+    public static String gameModeId = 0;
 
     // ========== Masalah yang Diperbaiki ==========
     // 1. Method saveConfig() tidak bisa pakai 'this' karena static
