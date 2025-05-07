@@ -173,7 +173,7 @@ this.addDrawableChild(
         if (!hotspotActive) {
             // Ambil data dari UI lalu simpan ke ModConfig
             ModConfig.serverPort = parsePort(portField.getText());
-            ModConfig.maxPlayers = maxPlayers;
+            ModConfig.maxPlayers = Integer.parseInt(maxPlayersField.getText());
             ModConfig.gameModeId = gameModeButton.getValue().getId();
             ModConfig.allowPvp = pvpToggle.getValue();
             ModConfig.allowCheats = commandToggle.getValue();
