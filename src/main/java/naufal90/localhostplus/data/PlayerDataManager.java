@@ -42,38 +42,41 @@ public class PlayerDataManager {
             new File(DATA_DIR).mkdirs();
         });
     }
-
+    
     public static void savePlayerData(ServerPlayerEntity player) {
-        Map<String, Object> data = new HashMap<>();
-        try {
-        // Simpan inventory sebagai NbtList (pakai NbtIo untuk encode)
+    Map<String, Object> data = new HashMap<>();
+
+    try {
+        // Simpan inventory
         NbtList invList = player.getInventory().writeNbt(new NbtList());
+        NbtCompound wrapper = new NbtCompound();
+        wrapper.put("inventory", invList);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        NbtIo.writeCompressed(new NbtCompound() {{
-            put("inventory", invList);
-        }}, out);
+        NbtIo.writeCompressed(wrapper, out);
         String encoded = Base64.getEncoder().encodeToString(out.toByteArray());
         data.put("inventory", encoded);
-        
+
         // Simpan posisi
         Vec3d pos = player.getPos();
         data.put("position", new double[]{pos.x, pos.y, pos.z});
 
-        // Tambahan data player
+        // Tambahan status
         data.put("health", player.getHealth());
         data.put("foodLevel", player.getHungerManager().getFoodLevel());
         data.put("saturation", player.getHungerManager().getSaturationLevel());
         data.put("experience", player.experienceLevel);
         data.put("expProgress", player.experienceProgress);
-        
-        File file = new File(DATA_DIR + player.getUuidAsString() + ".json");
 
+        File file = new File(DATA_DIR + player.getUuidAsString() + ".json");
         try (FileWriter writer = new FileWriter(file)) {
             gson.toJson(data, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+    } catch (IOException e) {
+        e.printStackTrace();
+        player.sendMessage(Text.literal("Gagal menyimpan data pemain."), false);
     }
+    }
+    
 
     @SuppressWarnings("unchecked")
     public static void loadPlayerData(ServerPlayerEntity player) {
