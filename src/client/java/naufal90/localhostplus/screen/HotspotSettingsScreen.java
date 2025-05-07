@@ -94,6 +94,7 @@ protected void init() {
     private void toggleHotspot() {
     if (this.client.getServer() instanceof IntegratedServer server) {
         if (!hotspotActive) {
+            try {
             // Ambil data dari UI lalu simpan ke ModConfig
             ModConfig.serverPort = parsePort(portField.getText());
             ModConfig.maxPlayers = Integer.parseInt(maxPlayersField.getText());
@@ -110,7 +111,18 @@ protected void init() {
             server.setServerPort(ModConfig.serverPort);
 
             Broadcaster.startBroadcast(ModConfig.serverPort);
+            hotspotActive = true;
+                startStopButton.setMessage(Text.literal("Stop Server"));
 
+                // Logging ke konsol
+                System.out.println("[LocalHostPlus] Server berhasil dijalankan.");
+                System.out.println("[LocalHostPlus] Port: " + ModConfig.serverPort);
+                System.out.println("[LocalHostPlus] Max Players: " + ModConfig.maxPlayers);
+                System.out.println("[LocalHostPlus] Gamemode: " + gameModeButton.getValue().getName());
+                System.out.println("[LocalHostPlus] Online Mode: " + ModConfig.onlineMode);
+                System.out.println("[LocalHostPlus] PVP: " + ModConfig.allowPvp);
+                System.out.println("[LocalHostPlus] Cheats: " + ModConfig.allowCheats);
+            
             // Kirim pesan ke pemain
             if (this.client.player != null) {
                 try {
@@ -120,17 +132,26 @@ protected void init() {
                     this.client.player.sendMessage(Text.literal("[LocalHostPlus] Server aktif di port " + ModConfig.serverPort), false);
                 }
             }
-
-            hotspotActive = true;
-            startStopButton.setMessage(Text.literal("Stop Server"));
+            } catch (Exception e) {
+                if (this.client.player != null) {
+                    this.client.player.sendMessage(Text.literal("§cGagal memulai server: " + e.getMessage()), false);
+                }
+                System.err.println("[LocalHostPlus] Error saat memulai server: " + e.getMessage());
+                return;
+        }      
         } else {
             Broadcaster.stopBroadcast();
+            hotspotActive = false;
+            startStopButton.setMessage(Text.literal("Start Server"));
+
+            System.out.println("[LocalHostPlus] Server dimatikan.");
+
             if (this.client.player != null) {
                 this.client.player.sendMessage(Text.literal("[LocalHostPlus] Server dinonaktifkan."), false);
             }
-            hotspotActive = false;
-            startStopButton.setMessage(Text.literal("Start Server"));
         }
+    } else {
+        System.err.println("[LocalHostPlus] Gagal mengakses server: Bukan instance IntegratedServer.");
     }
 
     this.client.setScreen(null); // Kembali ke game
