@@ -20,7 +20,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Base64
+import java.util.Base64;
 
 public class PlayerDataManager {
     private static final String DATA_DIR = "config/localhostplus/playerdata/";
