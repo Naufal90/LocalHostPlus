@@ -94,7 +94,6 @@ public class PlayerDataManager {
             // Teleport ke posisi
             List<?> posListRaw = (List<?>) data.get("position");
             if (posListRaw != null && posListRaw.size() == 3) {
-                try {
                     double x = ((Number) posListRaw.get(0)).doubleValue();
                     double y = ((Number) posListRaw.get(1)).doubleValue();
                     double z = ((Number) posListRaw.get(2)).doubleValue();
@@ -116,7 +115,5 @@ public class PlayerDataManager {
                     player.sendMessage(Text.literal("Gagal memuat data pemain."), false);
                 }
             }
-        }
-    }
 }
     
