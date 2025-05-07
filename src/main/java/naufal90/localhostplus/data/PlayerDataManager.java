@@ -59,6 +59,13 @@ public class PlayerDataManager {
         // Simpan posisi
         Vec3d pos = player.getPos();
         data.put("position", new double[]{pos.x, pos.y, pos.z});
+
+        // Tambahan data player
+        data.put("health", player.getHealth());
+        data.put("foodLevel", player.getHungerManager().getFoodLevel());
+        data.put("saturation", player.getHungerManager().getSaturationLevel());
+        data.put("experience", player.experienceLevel);
+        data.put("expProgress", player.experienceProgress);
         
         File file = new File(DATA_DIR + player.getUuidAsString() + ".json");
 
@@ -93,6 +100,18 @@ public class PlayerDataManager {
                     double y = ((Number) posListRaw.get(1)).doubleValue();
                     double z = ((Number) posListRaw.get(2)).doubleValue();
                     player.requestTeleport(x, y, z);
+                    // Pulihkan status player
+                    if (data.containsKey("health")) {
+                        player.setHealth(((Number) data.get("health")).floatValue());
+                    }
+                    if (data.containsKey("foodLevel") && data.containsKey("saturation")) {
+                        player.getHungerManager().setFoodLevel(((Number) data.get("foodLevel")).intValue());
+                        player.getHungerManager().setSaturationLevel(((Number) data.get("saturation")).floatValue());
+                    }
+                    if (data.containsKey("experience") && data.containsKey("expProgress")) {
+                        player.experienceLevel = ((Number) data.get("experience")).intValue();
+                        player.experienceProgress = ((Number) data.get("expProgress")).floatValue();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     player.sendMessage(Text.literal("Gagal memuat data pemain."), false);
