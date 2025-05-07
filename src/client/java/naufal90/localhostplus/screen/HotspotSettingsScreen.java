@@ -83,7 +83,7 @@ y += 24;
 gameModeButton = this.addDrawableChild(
     CyclingButtonWidget.<GameMode>builder(GameMode::getSimpleTranslatableName)
         .values(GameMode.values())
-        .initially(GameMode.byId(ModConfig.gamemodeId))
+        .initially(GameMode.byId(ModConfig.gameModeId))
         .build(centerX - 75, y, 150, 20, Text.literal("Gamemode"))
 );
 gameModeButton.setTooltip(Tooltip.of(
@@ -174,7 +174,7 @@ this.addDrawableChild(
             // Ambil data dari UI lalu simpan ke ModConfig
             ModConfig.serverPort = parsePort(portField.getText());
             ModConfig.maxPlayers = maxPlayers;
-            ModConfig.gamemodeId = gameModeButton.getValue().getId();
+            ModConfig.gameModeId = gameModeButton.getValue().getId();
             ModConfig.allowPvp = pvpToggle.getValue();
             ModConfig.allowCheats = commandToggle.getValue();
             ModConfig.onlineMode = onlineModeToggle.getvalue();
