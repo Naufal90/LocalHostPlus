@@ -21,7 +21,6 @@ import naufal90.localhostplus.config.ModConfig;
 @Environment(EnvType.CLIENT)
 public class HotspotSettingsScreen extends Screen {
     private final Screen parent;
-    private boolean isWorldRunning;
     private ButtonWidget startStopButton;
     private boolean hotspotActive = false;
     private TextFieldWidget portField;
@@ -39,9 +38,6 @@ public class HotspotSettingsScreen extends Screen {
     @Override
 protected void init() {
     this.hotspotActive = Broadcaster.isBroadcasting();
-    
-    // Cek status world
-    isWorldRunning = MinecraftClient.getInstance().getServer() != null;
     
     int centerX = this.width / 2;
     int y = this.height / 2 - 60;
@@ -167,6 +163,11 @@ this.addDrawableChild(
         .build()
 );
 }
+
+    private boolean isWorldRunning() {
+    return MinecraftClient.getInstance().getServer() != null;
+    }
+    
     private void toggleHotspot() {
     if (this.client.getServer() instanceof IntegratedServer server) {
         if (!hotspotActive) {
