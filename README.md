@@ -1,4 +1,8 @@
-# LocalHostPlus (Fabric Mod)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Naufal90/TeleChatSRV/c6022d8dfcf5066614631cc1604aadc38d192018/.github/assets/logo.PNG" alt="TeleChatSRV Logo" width="200"/>
+</p>
+
+<h1 align="center">LocalHostPlus (Fabric Mod)</h1>
 
 **LocalHostPlus** adalah mod Minecraft Fabric yang memungkinkan pemain membuka dunia lokal (*Open to LAN*) melalui jaringan **hotspot**, memungkinkan pemain lain terhubung tanpa perlu internet, mirip dengan mekanisme multiplayer Minecraft Bedrock (mobile).
 
