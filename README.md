@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".github/workflows/assets/logo.PNG" alt="LocalHostPlus Logo" width="200"/>
+  <img src=".github/workflows/assets/logo.png" alt="LocalHostPlus Logo" width="200"/>
 </p>
 
 <h1 align="center">LocalHostPlus (Fabric Mod)</h1>
