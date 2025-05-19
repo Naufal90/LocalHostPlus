@@ -4,7 +4,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
-import naufal90.localhostplus.network.NetworkUtils;
+import naufal90.localhostplus.utils.NetworkUtils;
 
 public class Broadcaster {
     private static Thread thread;
