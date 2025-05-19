@@ -94,7 +94,7 @@ protected void init() {
             int port = ModConfig.serverPort;
             String motd = this.client.getServer().getMotd(); // atau string lain untuk deskripsi world
 
-            naufal90.localhostplus.online.OnlineHostPublisher.publish(ip, port, motd);
+            naufal90.localhostplus.network.OnlineHostPublisher.publish(ip, port, motd);
 
             this.client.player.sendMessage(Text.of("[LocalHostPlus] Online world published at " + ip + ":" + port), false);
         } catch (Exception e) {
