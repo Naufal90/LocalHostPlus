@@ -10,7 +10,7 @@ import java.util.List;
 
 public class OnlineHostFetcher {
 
-    private static final String API_URL = "https://your-api.railway.app/hosts"; // Ganti sesuai backend
+    private static final String API_URL = "https://api.naufal90.my.id/hosts"; // Ganti sesuai backend
 
     public static List<OnlineWorldData> fetchHosts() {
         try {
