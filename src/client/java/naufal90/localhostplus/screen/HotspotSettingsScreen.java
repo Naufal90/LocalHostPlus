@@ -137,7 +137,8 @@ protected void init() {
             server.setOnlineMode(ModConfig.onlineMode);
             server.setServerPort(ModConfig.serverPort);
 
-            Broadcaster.startBroadcast(username,ModConfig.serverPort);
+            String username = this.client.getSession().getUsername();
+                Broadcaster.startBroadcast(username, ModConfig.serverPort);
             hotspotActive = true;
                 startStopButton.setMessage(Text.literal("Stop Server"));
 
