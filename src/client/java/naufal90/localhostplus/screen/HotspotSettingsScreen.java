@@ -17,6 +17,7 @@ import net.minecraft.world.GameMode;  // Ganti dari GameType ke GameMode
 import naufal90.localhostplus.network.Broadcaster;
 import naufal90.localhostplus.screen.ToggleButtonWidget;
 import naufal90.localhostplus.config.ModConfig;
+import naufal90.localhostplus.screen.OnlinePlayScreen;
 
 @Environment(EnvType.CLIENT)
 public class HotspotSettingsScreen extends Screen {
