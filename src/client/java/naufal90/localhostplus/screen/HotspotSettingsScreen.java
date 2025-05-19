@@ -17,7 +17,6 @@ import net.minecraft.world.GameMode;  // Ganti dari GameType ke GameMode
 import naufal90.localhostplus.network.Broadcaster;
 import naufal90.localhostplus.screen.ToggleButtonWidget;
 import naufal90.localhostplus.config.ModConfig;
-import naufal90.localhostplus.screen.OnlinePlayScreen;
 
 @Environment(EnvType.CLIENT)
 public class HotspotSettingsScreen extends Screen {
@@ -87,11 +86,13 @@ protected void init() {
         .build()
     );
 
-    this.addDrawableChild(ButtonWidget.builder(Text.of("Online Worlds"), button -> {
-    client.setScreen(new OnlinePlayScreen());
-}).position(this.width / 2 - 100, y += 24)
-  .size(200, 20)
-  .build());
+    this.addDrawableChild(ButtonWidget.builder(Text.of("Start Online World"), button -> {
+    // Mulai broadcast + info di chat
+    Broadcaster.start();
+    String ip = ServerUtils.getLocalIp(); // pastikan kamu punya util untuk ambil IP lokal
+    int port = ModConfig.INSTANCE.serverPort;
+    this.client.player.sendMessage(Text.of("Online World started on " + ip + ":" + port), false);
+}).position(this.width / 2 - 100, this.height - 80).size(200, 20).build());
 }
 
     private boolean isWorldRunning() {
