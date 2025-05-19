@@ -29,9 +29,5 @@ public class HotspotServer {
             LocalHostPlusMod.LOGGER.error("[Hotspot] Failed to open LAN: ", e);
         }
     }
-}
-    
-    public static void start(String uuid, MinecraftServer server) {
-    Broadcaster.startBroadcast(uuid, server.getServerPort());
-    }
+  }
 }
