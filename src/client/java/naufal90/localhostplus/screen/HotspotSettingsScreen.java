@@ -101,7 +101,7 @@ protected void init() {
             int maxPlayers = ModConfig.maxPlayers;
             boolean onlineMode = ModConfig.onlineMode;
 
-            OnlineHostPublisher.publish(uuid, ip, port, worldName, motd, maxPlayers, onlineMode);
+            OnlineHostPublisher.publish(username,uuid, ip, port, worldName, motd, maxPlayers, onlineMode);
 
             this.client.player.sendMessage(Text.of("[LocalHostPlus] Online world published at " + ip + ":" + port), false);
         } catch (Exception e) {
@@ -137,7 +137,7 @@ protected void init() {
             server.setOnlineMode(ModConfig.onlineMode);
             server.setServerPort(ModConfig.serverPort);
 
-            Broadcaster.startBroadcast(ModConfig.serverPort);
+            Broadcaster.startBroadcast(username,ModConfig.serverPort);
             hotspotActive = true;
                 startStopButton.setMessage(Text.literal("Stop Server"));
 
