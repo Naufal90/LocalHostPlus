@@ -22,4 +22,9 @@ public class HotspotServer {
             }
         }
     }
+    
+    public static void start(String username, MinecraftServer server) {
+        Broadcaster.startBroadcast(username, server.getServerPort());
+    }
+    
 }
