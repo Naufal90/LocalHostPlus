@@ -1,23 +1,29 @@
 package naufal90.localhostplus.util;
 
 import java.net.*;
-import java.util.Enumeration;
+import java.util.*;
 
 public class NetworkUtils {
-    public static String getLocalIp() {
-        try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
-                        return inetAddress.getHostAddress();
-                    }
-                }
+    public static String getLocalIp() throws SocketException {
+        for (NetworkInterface iface : Collections.list(NetworkInterface.getNetworkInterfaces())) {
+            if (iface.isLoopback() || !iface.isUp()) continue;
+
+            for (InetAddress addr : Collections.list(iface.getInetAddresses())) {
+                if (addr instanceof Inet4Address) return addr.getHostAddress();
             }
-        } catch (Exception ex) {
-            System.err.println("[LocalHostPlus] Failed to get local IP: " + ex.getMessage());
         }
-        return "127.0.0.1"; // fallback
+        return "127.0.0.1";
+    }
+
+    public static String getBroadcastAddress() throws SocketException {
+        for (NetworkInterface iface : Collections.list(NetworkInterface.getNetworkInterfaces())) {
+            if (iface.isLoopback() || !iface.isUp()) continue;
+
+            for (InterfaceAddress addr : iface.getInterfaceAddresses()) {
+                InetAddress broadcast = addr.getBroadcast();
+                if (broadcast != null) return broadcast.getHostAddress();
+            }
+        }
+        return "255.255.255.255";
     }
 }
