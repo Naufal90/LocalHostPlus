@@ -9,7 +9,7 @@ public class OnlineHostPublisher {
 
     private static final String API_URL = "https://api.naufal90.my.id/hosts";
 
-    public static void publish(String uuid, String ip, int port, String worldName, String motd, int maxPlayers, boolean onlineMode) {
+    public static void publish(String uuid, String username, String ip, int port, String worldName, String motd, int maxPlayers, boolean onlineMode) {
         try {
             URL url = new URL(API_URL);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -18,17 +18,18 @@ public class OnlineHostPublisher {
             con.setDoOutput(true);
 
             String json = String.format("""
-                {
-                    "uuid": "%s",
-                    "ip": "%s",
-                    "port": %d,
-                    "worldName": "%s",
-                    "motd": "%s",
-                    "maxPlayers": %d,
-                    "onlineMode": %b
-                }
-                """, uuid, ip, port, worldName, motd, maxPlayers, onlineMode);
-
+    {
+        "uuid": "%s",
+        "username": "%s",
+        "ip": "%s",
+        "port": %d,
+        "worldName": "%s",
+        "motd": "%s",
+        "maxPlayers": %d,
+        "onlineMode": %b
+    }
+    """, uuid, username, ip, port, worldName, motd, maxPlayers, onlineMode);
+            
             System.out.println("[LocalHostPlus] JSON body:");
             System.out.println(json);
 
