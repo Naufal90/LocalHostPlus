@@ -9,18 +9,19 @@ import naufal90.localhostplus.LocalHostPlusMod;
 public class HotspotServer {
 
     public static void openToLan() {
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (client.getServer() instanceof IntegratedServer) {
-            IntegratedServer server = (IntegratedServer) client.getServer();
-            try {
-                server.openToLan(server.getSaveProperties().getGameMode(), server.getSaveProperties().isHardcore(), 25565);
-                LocalHostPlusMod.LOGGER.info("[Hotspot] Server published on LAN!");
+    MinecraftClient client = MinecraftClient.getInstance();
+    if (client.getServer() instanceof IntegratedServer) {
+        IntegratedServer server = (IntegratedServer) client.getServer();
+        try {
+            server.openToLan(server.getSaveProperties().getGameMode(), server.getSaveProperties().isHardcore(), 25565);
+            LocalHostPlusMod.LOGGER.info("[Hotspot] Server published on LAN!");
 
-                Broadcaster.startBroadcast(username,server.getServerPort());
-            } catch (Exception e) {
-                LocalHostPlusMod.LOGGER.error("[Hotspot] Failed to open LAN: ", e);
-            }
+            String username = client.getSession().getUsername(); // Tambahkan ini
+            Broadcaster.startBroadcast(username, server.getServerPort()); // Gunakan username
+        } catch (Exception e) {
+            LocalHostPlusMod.LOGGER.error("[Hotspot] Failed to open LAN: ", e);
         }
+    }
     }
     
     public static void start(String username, MinecraftServer server) {
