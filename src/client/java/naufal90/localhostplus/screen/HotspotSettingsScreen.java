@@ -16,6 +16,7 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.world.GameMode;  // Ganti dari GameType ke GameMode
 import naufal90.localhostplus.network.Broadcaster;
 import naufal90.localhostplus.network.OnlineHostPublisher;
+import naufal90.localhostplus.network.NetworkUtils;
 import naufal90.localhostplus.screen.ToggleButtonWidget;
 import naufal90.localhostplus.config.ModConfig;
 
@@ -90,7 +91,7 @@ protected void init() {
     this.addDrawableChild(ButtonWidget.builder(Text.of("Start Online World"), button -> {
     if (this.client.getServer() instanceof IntegratedServer) {
         try {
-            String ip = java.net.InetAddress.getLocalHost().getHostAddress();
+            String ip = NetworkUtils.getLocalIp();
             String uuid = this.client.getSession().getUuid();
             int port = ModConfig.serverPort;
             String worldName = this.client.getServer().getSaveProperties().getLevelName();
@@ -179,7 +180,7 @@ protected void init() {
     }
 
     this.client.setScreen(null); // Kembali ke game
-}
+  }
 
 private int parsePort(String text) {
     try {
