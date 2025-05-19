@@ -17,7 +17,7 @@ import net.minecraft.world.GameMode;  // Ganti dari GameType ke GameMode
 import naufal90.localhostplus.network.Broadcaster;
 import naufal90.localhostplus.network.OnlineHostPublisher;
 import naufal90.localhostplus.utils.NetworkUtils;
-import naufal90.localhost.plus.utils.PlayerUUIDManager;
+import naufal90.localhostplus.utils.PlayerUUIDManager;
 import naufal90.localhostplus.screen.ToggleButtonWidget;
 import naufal90.localhostplus.config.ModConfig;
 
@@ -93,7 +93,8 @@ protected void init() {
     if (this.client.getServer() instanceof IntegratedServer) {
         try {
             String ip = NetworkUtils.getLocalIp();
-            String uuid = this.client.getSession().getUuid();
+            String username = this.client.getSession().getUsername();
+            String uuid = PlayerUUIDManager.getOfflineUUID(username).toString();
             int port = ModConfig.serverPort;
             String worldName = this.client.getServer().getSaveProperties().getLevelName();
             String motd = ModConfig.serverMotd;
