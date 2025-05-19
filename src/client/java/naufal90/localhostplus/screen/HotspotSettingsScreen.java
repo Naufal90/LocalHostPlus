@@ -85,6 +85,12 @@ protected void init() {
         .size(150, 20)
         .build()
     );
+
+    this.addDrawableChild(ButtonWidget.builder(Text.of("Online Worlds"), button -> {
+    client.setScreen(new OnlinePlayScreen());
+}).position(this.width / 2 - 100, y += 24)
+  .size(200, 20)
+  .build());
 }
 
     private boolean isWorldRunning() {
