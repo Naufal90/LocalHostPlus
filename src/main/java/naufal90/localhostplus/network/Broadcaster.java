@@ -15,7 +15,7 @@ public class Broadcaster {
         thread = new Thread(() -> {
             try (DatagramSocket socket = new DatagramSocket()) {
                 socket.setBroadcast(true);
-                InetAddress address = InetAddress.getByName(NetworkUtils.getBroadcastAddress());
+                InetAddress address = NetworkUtils.getBroadcastAddress();
                 while (running) {
                     String message = "MCHotspot:" + port;
                     byte[] buffer = message.getBytes(StandardCharsets.UTF_8);
