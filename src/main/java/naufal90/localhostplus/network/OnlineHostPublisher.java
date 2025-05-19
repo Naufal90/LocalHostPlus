@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 public class OnlineHostPublisher {
 
-    private static final String API_URL = "https://your-api.railway.app/hosts"; // Ganti sesuai backend
+    private static final String API_URL = "https://api.naufal90.my.id/hosts"; // Ganti sesuai backend
 
     public static void publish(String uuid, String ip, int port, String worldName, String motd, int maxPlayers) {
         try {
