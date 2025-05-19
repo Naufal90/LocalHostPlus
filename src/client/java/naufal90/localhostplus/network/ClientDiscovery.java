@@ -37,12 +37,16 @@ public class ClientDiscovery {
                     DatagramPacket packet = new DatagramPacket(buf, buf.length);
                     socket.receive(packet);
                     String data = new String(packet.getData(), 0, packet.getLength(), StandardCharsets.UTF_8);
-                    
+
+                    // Format: MCHotspot:<uuid>:<port>
                     String[] parts = data.split(":");
-                    if (parts.length == 2) {
+                    if (parts.length == 3 && parts[0].equals("MCHotspot")) {
+                        String uuid = parts[1];
+                        String port = parts[2];
                         String address = packet.getAddress().getHostAddress();
-                        String port = parts[1];
+
                         addServerEntry(address, port);
+                        LocalHostPlusClientMod.LOGGER.info("[Discovery] Found host UUID " + uuid + " at " + address + ":" + port);
                     }
                 }
             } catch (Exception e) {
@@ -55,8 +59,8 @@ public class ClientDiscovery {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.currentScreen instanceof MultiplayerScreen screen) {
             ServerInfo info = new ServerInfo("Hotspot World", address + ":" + port, false);
-            screen.getServerList().add(info,false);
+            screen.getServerList().add(info, false);
             LocalHostPlusClientMod.LOGGER.info("[Discovery] Server found: " + address + ":" + port);
         }
     }
-}
+                }
