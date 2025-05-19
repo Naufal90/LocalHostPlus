@@ -92,7 +92,7 @@ protected void init() {
         try {
             String ip = java.net.InetAddress.getLocalHost().getHostAddress();
             int port = ModConfig.serverPort;
-            String motd = this.client.getServer().getMotd(); // atau string lain untuk deskripsi world
+            String motd = ModConfig.serverMotd; // atau string lain untuk deskripsi world
 
             naufal90.localhostplus.network.OnlineHostPublisher.publish(ip, port, motd);
 
