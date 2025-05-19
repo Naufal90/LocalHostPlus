@@ -29,7 +29,7 @@ public class OnlinePlayScreen extends Screen {
 
         this.worldList = new OnlineWorldListWidget(this.client, this.width, this.height, 40, this.height - 60, 24);
         for (OnlineWorldData world : worlds) {
-            this.worldList.addEntry(new OnlineWorldListWidget.WorldEntry(world));
+            this.worldList.addWorldEntry(this.worldList.new WorldEntry(world));
         }
         this.addSelectableChild(this.worldList);
 
@@ -45,7 +45,8 @@ public class OnlinePlayScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.renderBackground(context);
-        context.drawCenteredText(this.textRenderer, this.title, this.width / 2, 12, 0xFFFFFF);
+        int titleWidth = this.textRenderer.getWidth(this.title);
+        context.drawText(this.textRenderer, this.title, (this.width - titleWidth) / 2, 12, 0xFFFFFF, false);
         this.worldList.render(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
     }
@@ -65,11 +66,19 @@ public class OnlinePlayScreen extends Screen {
             return this.width - 12;
         }
 
+        @Override
+protected void appendNarrations(NarrationMessageBuilder builder) {
+    // Kosongkan jika tidak menggunakan narasi
+}
+
         public static class WorldEntry extends EntryListWidget.Entry<WorldEntry> {
             private final OnlineWorldData data;
 
             public WorldEntry(OnlineWorldData data) {
                 this.data = data;
+            }
+            public void addWorldEntry(WorldEntry entry) {
+                this.addEntry(entry);
             }
 
             @Override
@@ -81,14 +90,14 @@ public class OnlinePlayScreen extends Screen {
             }
 
             @Override
-            public List<? extends Element> children() {
-                return Collections.emptyList();
-            }
+public List<? extends Selectable> selectableChildren() {
+    return Collections.emptyList();
+}
 
-            @Override
-            public List<? extends Selectable> selectableChildren() {
-                return Collections.emptyList();
-            }
+@Override
+public List<? extends Element> children() {
+    return Collections.emptyList();
+}
 
             @Override
             public boolean mouseClicked(double mouseX, double mouseY, int button) {
