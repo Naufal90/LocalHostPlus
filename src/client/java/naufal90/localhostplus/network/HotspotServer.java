@@ -16,7 +16,7 @@ public class HotspotServer {
                 server.openToLan(server.getSaveProperties().getGameMode(), server.getSaveProperties().isHardcore(), 25565);
                 LocalHostPlusMod.LOGGER.info("[Hotspot] Server published on LAN!");
 
-                Broadcaster.startBroadcast(server.getServerPort());
+                Broadcaster.startBroadcast(username,server.getServerPort());
             } catch (Exception e) {
                 LocalHostPlusMod.LOGGER.error("[Hotspot] Failed to open LAN: ", e);
             }
