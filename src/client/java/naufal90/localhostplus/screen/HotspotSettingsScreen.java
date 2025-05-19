@@ -91,10 +91,14 @@ protected void init() {
     if (this.client.getServer() instanceof IntegratedServer) {
         try {
             String ip = java.net.InetAddress.getLocalHost().getHostAddress();
+            String uuid = this.client.getSession().getUuid();
             int port = ModConfig.serverPort;
-            String motd = ModConfig.serverMotd; // atau string lain untuk deskripsi world
+            String worldName = this.client.getServer().getSaveProperties().getLevelName();
+            String motd = ModConfig.serverMotd;
+            int maxPlayers = ModConfig.maxPlayers;
+            boolean onlineMode = ModConfig.onlineMode;
 
-            naufal90.localhostplus.network.OnlineHostPublisher.publish(ip, port, motd);
+            OnlineHostPublisher.publish(uuid, ip, port, worldName, motd, maxPlayers, onlineMode);
 
             this.client.player.sendMessage(Text.of("[LocalHostPlus] Online world published at " + ip + ":" + port), false);
         } catch (Exception e) {
