@@ -1,4 +1,4 @@
-package naufal90.localhostplus.network;
+package naufal90.localhostplus.utils;
 
 import java.net.*;
 import java.util.*;
