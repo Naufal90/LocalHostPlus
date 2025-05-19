@@ -15,6 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.world.GameMode;  // Ganti dari GameType ke GameMode
 import naufal90.localhostplus.network.Broadcaster;
+import naufal90.localhostplus.network.OnlineHostPublisher;
 import naufal90.localhostplus.screen.ToggleButtonWidget;
 import naufal90.localhostplus.config.ModConfig;
 
@@ -87,11 +88,22 @@ protected void init() {
     );
 
     this.addDrawableChild(ButtonWidget.builder(Text.of("Start Online World"), button -> {
-    // Mulai broadcast + info di chat
-    Broadcaster.start();
-    String ip = ServerUtils.getLocalIp(); // pastikan kamu punya util untuk ambil IP lokal
-    int port = ModConfig.INSTANCE.serverPort;
-    this.client.player.sendMessage(Text.of("Online World started on " + ip + ":" + port), false);
+    if (this.client.getServer() instanceof IntegratedServer) {
+        try {
+            String ip = java.net.InetAddress.getLocalHost().getHostAddress();
+            int port = ModConfig.serverPort;
+            String motd = this.client.getServer().getMotd(); // atau string lain untuk deskripsi world
+
+            naufal90.localhostplus.online.OnlineHostPublisher.publish(ip, port, motd);
+
+            this.client.player.sendMessage(Text.of("[LocalHostPlus] Online world published at " + ip + ":" + port), false);
+        } catch (Exception e) {
+            this.client.player.sendMessage(Text.of("§cGagal mempublikasikan online world: " + e.getMessage()), false);
+            e.printStackTrace();
+        }
+    } else {
+        this.client.player.sendMessage(Text.of("§cServer belum berjalan. Mulai server terlebih dahulu."), false);
+    }
 }).position(this.width / 2 - 100, this.height - 80).size(200, 20).build());
 }
 
