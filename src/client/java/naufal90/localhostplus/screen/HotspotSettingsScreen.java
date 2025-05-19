@@ -138,7 +138,10 @@ protected void init() {
             server.setServerPort(ModConfig.serverPort);
 
             String username = this.client.getSession().getUsername();
-                Broadcaster.startBroadcast(username, ModConfig.serverPort);
+                String uuid = PlayerUUIDManager.getOfflineUUID(username).toString();
+                // lalu dipakai:
+                Broadcaster.startBroadcast(uuid, port);
+                OnlineHostPublisher.publish(uuid, ip, port, worldName, motd, maxPlayers, onlineMode);
             hotspotActive = true;
                 startStopButton.setMessage(Text.literal("Stop Server"));
 
