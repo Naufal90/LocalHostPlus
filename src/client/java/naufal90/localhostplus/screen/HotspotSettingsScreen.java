@@ -16,7 +16,7 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.world.GameMode;  // Ganti dari GameType ke GameMode
 import naufal90.localhostplus.network.Broadcaster;
 import naufal90.localhostplus.network.OnlineHostPublisher;
-import naufal90.localhostplus.network.NetworkUtils;
+import naufal90.localhostplus.utils.NetworkUtils;
 import naufal90.localhostplus.screen.ToggleButtonWidget;
 import naufal90.localhostplus.config.ModConfig;
 
