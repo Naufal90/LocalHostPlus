@@ -4,6 +4,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
+import naufal90.localhostplus.network.NetworkUtils;
 
 public class Broadcaster {
     private static Thread thread;
@@ -14,8 +15,7 @@ public class Broadcaster {
         thread = new Thread(() -> {
             try (DatagramSocket socket = new DatagramSocket()) {
                 socket.setBroadcast(true);
-                InetAddress address = InetAddress.getByName("255.255.255.255");
-
+                InetAddress address = InetAddress.getByName(NetworkUtils.getBroadcastAddress());
                 while (running) {
                     String message = "MCHotspot:" + port;
                     byte[] buffer = message.getBytes(StandardCharsets.UTF_8);
