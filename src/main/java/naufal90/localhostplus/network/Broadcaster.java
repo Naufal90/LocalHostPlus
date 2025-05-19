@@ -12,29 +12,27 @@ public class Broadcaster {
     private static Thread thread;
     private static boolean running = false;
 
-    public static void startBroadcast(String username, int port) {
-        running = true;
-        thread = new Thread(() -> {
-            try (DatagramSocket socket = new DatagramSocket()) {
-                socket.setBroadcast(true);
-                InetAddress address = NetworkUtils.getBroadcastAddress();
+    public static void startBroadcast(String uuid, int port) {
+    running = true;
+    thread = new Thread(() -> {
+        try (DatagramSocket socket = new DatagramSocket()) {
+            socket.setBroadcast(true);
+            InetAddress address = NetworkUtils.getBroadcastAddress();
 
-                String uuid = PlayerUUIDManager.getOfflineUUID(username).toString();
+            while (running) {
+                // Format: MCHotspot:<uuid>:<port>
+                String message = "MCHotspot:" + uuid + ":" + port;
+                byte[] buffer = message.getBytes(StandardCharsets.UTF_8);
+                DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, 4445);
+                socket.send(packet);
 
-                while (running) {
-                    // Format pesan bisa kamu ubah sesuai kebutuhan parsing di ClientDiscovery
-                    String message = "MCHotspot:" + uuid + ":" + port;
-                    byte[] buffer = message.getBytes(StandardCharsets.UTF_8);
-                    DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, 4445);
-                    socket.send(packet);
-
-                    Thread.sleep(1000); // Broadcast every 1 second
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                Thread.sleep(1000);
             }
-        });
-        thread.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    });
+    thread.start();
     }
 
     public static void stopBroadcast() {
