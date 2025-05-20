@@ -137,8 +137,14 @@ protected void init() {
             server.setOnlineMode(ModConfig.onlineMode);
             server.setServerPort(ModConfig.serverPort);
 
+            int port = ModConfig.serverPort;
+            String ip = NetworkUtils.getLocalIp(); // Atau getPublicIp() jika kamu punya
+            String worldName = ModConfig.worldName;
+            String motd = ModConfig.serverMotd;
+            int maxPlayers = ModConfig.maxPlayers;
+            boolean onlineMode = ModConfig.onlineMode;
             String username = this.client.getSession().getUsername();
-                String uuid = PlayerUUIDManager.getOfflineUUID(username).toString();
+            String uuid = PlayerUUIDManager.getOfflineUUID(username).toString();
                 // lalu dipakai:
                 Broadcaster.startBroadcast(uuid, port);
                 OnlineHostPublisher.publish(uuid, ip, port, worldName, motd, maxPlayers, onlineMode);
