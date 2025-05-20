@@ -147,7 +147,7 @@ protected void init() {
             String uuid = PlayerUUIDManager.getOfflineUUID(username).toString();
                 // lalu dipakai:
                 Broadcaster.startBroadcast(uuid, port);
-                OnlineHostPublisher.publish(String uuid, String ip, String worldName, int port, String motd, String username, int maxPlayers, boolean onlineMode);
+                OnlineHostPublisher.publish(String uuid, String ip, String worldName, int port, String motd, String username, int maxPlayers, boolean onlineMode)
             hotspotActive = true;
                 startStopButton.setMessage(Text.literal("Stop Server"));
 
