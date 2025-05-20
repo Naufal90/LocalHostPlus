@@ -147,7 +147,7 @@ protected void init() {
             String uuid = PlayerUUIDManager.getOfflineUUID(username).toString();
                 // lalu dipakai:
                 Broadcaster.startBroadcast(uuid, port);
-                OnlineHostPublisher.publish(uuid, ip, port, worldName, motd, maxPlayers, onlineMode);
+                OnlineHostPublisher.publish(String uuid, String ip, String worldName, int port, String motd, String username, int maxPlayers, boolean onlineMode);
             hotspotActive = true;
                 startStopButton.setMessage(Text.literal("Stop Server"));
 
@@ -163,7 +163,6 @@ protected void init() {
             // Kirim pesan ke pemain
             if (this.client.player != null) {
                 try {
-                    String ip = java.net.InetAddress.getLocalHost().getHostAddress();
                     this.client.player.sendMessage(Text.literal("[LocalHostPlus] Server aktif di " + ip + ":" + ModConfig.serverPort), false);
                 } catch (Exception e) {
                     this.client.player.sendMessage(Text.literal("[LocalHostPlus] Server aktif di port " + ModConfig.serverPort), false);
