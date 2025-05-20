@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class ModConfig {
-    // Config Values
     public static boolean autoBroadcast = true;
     public static int serverPort = 25565;
     public static String serverMotd = "LocalHostPlus Server!";
@@ -16,6 +15,8 @@ public class ModConfig {
     public static boolean allowCheats = true;
     public static int maxPlayers = 8;
     public static int gameModeId = 0; // default ke Survival
+    public static String worldName = "MyWorld"; // << Tambahkan ini
+}
 
     // ========== Masalah yang Diperbaiki ==========
     // 1. Method saveConfig() tidak bisa pakai 'this' karena static
