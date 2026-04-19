@@ -2,7 +2,6 @@ package naufal90.localhostplus.network;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ServerInfo;
@@ -10,7 +9,6 @@ import naufal90.localhostplus.LocalHostPlusClientMod;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,7 +31,7 @@ public class ClientDiscovery {
                 byte[] buf = new byte[256];
                 LocalHostPlusClientMod.LOGGER.info("[Discovery] Listening for LAN servers...");
 
-                while (true) {
+                while (running) {
                     DatagramPacket packet = new DatagramPacket(buf, buf.length);
                     socket.receive(packet);
                     String data = new String(packet.getData(), 0, packet.getLength(), StandardCharsets.UTF_8);
@@ -55,12 +53,28 @@ public class ClientDiscovery {
         });
     }
 
-    private static void addServerEntry(String address, String port) {
+    private static void addServerEntry(String address, String fullPort) {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.currentScreen instanceof MultiplayerScreen screen) {
-            ServerInfo info = new ServerInfo("Hotspot World", address + ":" + port, false);
-            screen.getServerList().add(info, false);
-            LocalHostPlusClientMod.LOGGER.info("[Discovery] Server found: " + address + ":" + port);
+            var serverList = screen.getServerList();
+            String fullAddress = address + ":" + fullPort;
+
+            // Check for duplicates
+            boolean exists = false;
+            for (int i = 0; i < serverList.size(); i++) {
+                ServerInfo existing = serverList.get(i);
+                if (fullAddress.equals(existing.address)) {
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (!exists) {
+                ServerInfo info = new ServerInfo("Hotspot World", fullAddress, false);
+                serverList.add(info, false);
+                serverList.saveFile();
+                LocalHostPlusClientMod.LOGGER.info("[Discovery] Server found and added: " + fullAddress);
+            }
         }
     }
-                }
+}
