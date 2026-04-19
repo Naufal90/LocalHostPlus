@@ -2,7 +2,7 @@ name: Build LocalHostPlus
 
 on:
   push:
-    branches: [ main ]
+    branches: [ Go-Online ]
 
 jobs:
   build:

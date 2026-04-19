@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class ModConfig {
-    // Config Values
     public static boolean autoBroadcast = true;
     public static int serverPort = 25565;
     public static String serverMotd = "LocalHostPlus Server!";
@@ -16,15 +15,11 @@ public class ModConfig {
     public static boolean allowCheats = true;
     public static int maxPlayers = 8;
     public static int gameModeId = 0; // default ke Survival
-
-    // ========== Masalah yang Diperbaiki ==========
-    // 1. Method saveConfig() tidak bisa pakai 'this' karena static
-    // 2. offlineMode tidak ada di class (seharusnya onlineMode)
-    // 3. Tidak ada handling untuk semua variabel config saat load
+    public static String worldName = "MyWorld"; // Tambahan
 
     public static void saveConfig() {
         try (FileWriter writer = new FileWriter("config/localhostplus.json")) {
-            new Gson().toJson(new ConfigData(), writer); // Gunakan wrapper class
+            new Gson().toJson(new ConfigData(), writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,7 +30,6 @@ public class ModConfig {
         if (file.exists()) {
             try (FileReader reader = new FileReader(file)) {
                 ConfigData data = new Gson().fromJson(reader, ConfigData.class);
-                // Update semua nilai
                 autoBroadcast = data.autoBroadcast;
                 serverPort = data.serverPort;
                 serverMotd = data.serverMotd;
@@ -44,13 +38,14 @@ public class ModConfig {
                 allowCheats = data.allowCheats;
                 maxPlayers = data.maxPlayers;
                 gameModeId = data.gameModeId;
+                worldName = data.worldName; // Tambahan
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    // ========== Wrapper Class untuk Serialisasi ==========
+    // Wrapper untuk serialisasi
     private static class ConfigData {
         boolean autoBroadcast;
         int serverPort;
@@ -60,6 +55,7 @@ public class ModConfig {
         boolean allowCheats;
         int maxPlayers;
         int gameModeId;
+        String worldName; // Tambahan
 
         public ConfigData() {
             this.autoBroadcast = ModConfig.autoBroadcast;
@@ -70,6 +66,7 @@ public class ModConfig {
             this.allowCheats = ModConfig.allowCheats;
             this.maxPlayers = ModConfig.maxPlayers;
             this.gameModeId = ModConfig.gameModeId;
+            this.worldName = ModConfig.worldName; // Tambahan
         }
     }
 }
