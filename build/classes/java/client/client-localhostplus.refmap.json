@@ -1,0 +1,24 @@
+{
+  "mappings": {
+    "naufal90/localhostplus/mixin/GameMenuScreenMixin": {
+      "initWidgets": "Lnet/minecraft/class_433;method_20543()V"
+    },
+    "naufal90/localhostplus/mixin/ScreenAccessor": {
+      "children": "field_22786:Ljava/util/List;",
+      "drawables": "field_33816:Ljava/util/List;",
+      "selectables": "field_33815:Ljava/util/List;"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "naufal90/localhostplus/mixin/GameMenuScreenMixin": {
+        "initWidgets": "Lnet/minecraft/class_433;method_20543()V"
+      },
+      "naufal90/localhostplus/mixin/ScreenAccessor": {
+        "children": "field_22786:Ljava/util/List;",
+        "drawables": "field_33816:Ljava/util/List;",
+        "selectables": "field_33815:Ljava/util/List;"
+      }
+    }
+  }
+}
