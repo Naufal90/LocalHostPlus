@@ -15,9 +15,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.world.GameMode;  // Ganti dari GameType ke GameMode
 import naufal90.localhostplus.network.Broadcaster;
-import naufal90.localhostplus.network.OnlineHostPublisher;
-import naufal90.localhostplus.utils.NetworkUtils;
-import naufal90.localhostplus.utils.PlayerUUIDManager;
 import naufal90.localhostplus.screen.ToggleButtonWidget;
 import naufal90.localhostplus.config.ModConfig;
 
@@ -88,30 +85,6 @@ protected void init() {
         .size(150, 20)
         .build()
     );
-
-    this.addDrawableChild(ButtonWidget.builder(Text.of("Start Online World"), button -> {
-    if (this.client.getServer() instanceof IntegratedServer) {
-        try {
-            String ip = NetworkUtils.getLocalIp();
-            String username = this.client.getSession().getUsername();
-            String uuid = PlayerUUIDManager.getOfflineUUID(username).toString();
-            int port = ModConfig.serverPort;
-            String worldName = this.client.getServer().getSaveProperties().getLevelName();
-            String motd = ModConfig.serverMotd;
-            int maxPlayers = ModConfig.maxPlayers;
-            boolean onlineMode = ModConfig.onlineMode;
-
-            OnlineHostPublisher.publish(username,uuid, ip, port, worldName, motd, maxPlayers, onlineMode);
-
-            this.client.player.sendMessage(Text.of("[LocalHostPlus] Online world published at " + ip + ":" + port), false);
-        } catch (Exception e) {
-            this.client.player.sendMessage(Text.of("§cGagal mempublikasikan online world: " + e.getMessage()), false);
-            e.printStackTrace();
-        }
-    } else {
-        this.client.player.sendMessage(Text.of("§cServer belum berjalan. Mulai server terlebih dahulu."), false);
-    }
-}).position(this.width / 2 - 100, this.height - 80).size(200, 20).build());
 }
 
     private boolean isWorldRunning() {
@@ -137,17 +110,7 @@ protected void init() {
             server.setOnlineMode(ModConfig.onlineMode);
             server.setServerPort(ModConfig.serverPort);
 
-            int port = ModConfig.serverPort;
-            String ip = NetworkUtils.getLocalIp(); // Atau getPublicIp() jika kamu punya
-            String worldName = ModConfig.worldName;
-            String motd = ModConfig.serverMotd;
-            int maxPlayers = ModConfig.maxPlayers;
-            boolean onlineMode = ModConfig.onlineMode;
-            String username = this.client.getSession().getUsername();
-            String uuid = PlayerUUIDManager.getOfflineUUID(username).toString();
-                // lalu dipakai:
-                Broadcaster.startBroadcast(uuid, port);
-                OnlineHostPublisher.publish(uuid, username, ip, port, worldName, motd, maxPlayers, onlineMode);
+            Broadcaster.startBroadcast(ModConfig.serverPort);
             hotspotActive = true;
                 startStopButton.setMessage(Text.literal("Stop Server"));
 
@@ -163,6 +126,7 @@ protected void init() {
             // Kirim pesan ke pemain
             if (this.client.player != null) {
                 try {
+                    String ip = java.net.InetAddress.getLocalHost().getHostAddress();
                     this.client.player.sendMessage(Text.literal("[LocalHostPlus] Server aktif di " + ip + ":" + ModConfig.serverPort), false);
                 } catch (Exception e) {
                     this.client.player.sendMessage(Text.literal("[LocalHostPlus] Server aktif di port " + ModConfig.serverPort), false);
@@ -191,7 +155,7 @@ protected void init() {
     }
 
     this.client.setScreen(null); // Kembali ke game
-  }
+}
 
 private int parsePort(String text) {
     try {
